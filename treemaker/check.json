@@ -1,0 +1,11 @@
+{
+  "basepath": "C:/Users/User/Desktop/New folder (2)",
+  "mode": "check",
+  "folders": {
+    "folder 2": {
+      "file.txt": "test1",
+      "file (1).txt": "test2",
+      "otherfile.txt": ""
+    }
+  }
+}

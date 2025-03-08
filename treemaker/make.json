@@ -1,0 +1,9 @@
+{
+  "basepath": "C:/Users/User/Desktop/New folder (2)",
+  "mode": "make",
+  "folders": {
+    "file 1": "testtext1",
+    "folder 1": { "file.txt": "test1" },
+    "folder 2": { "file.txt": "test2", "otherfile.txt": "" }
+  }
+}

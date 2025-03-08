@@ -1,0 +1,5 @@
+rctest/*.mkv
+rctest/*.zip
+rctest/ffmpeg.exe
+rctest/*.exe
+rctest/temp/*
