@@ -1,0 +1,11 @@
+rctest/*.mkv
+rctest/*.mp4
+rctest/*.zip
+rctest/ffmpeg.exe
+rctest/*.exe
+*.exe
+**.exe
+**/*.exe
+rctest/temp/*
+lib/.stfolder
+**.stfolder

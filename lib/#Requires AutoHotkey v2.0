@@ -1,0 +1,315 @@
+#Requires AutoHotkey v2.0
+#SingleInstance Force
+
+#Include *i <AutoThemed>
+
+try TraySetIcon("icon.ico")
+SetWorkingDir(A_ScriptDir)
+#Include *i <vars>
+
+#Include <Misc>
+
+#Include *i <betterui> ; betterui
+
+#Include *i <textfind> ; FindText, setSpeed, doClick
+; #Include <RemoteTreeView>
+; #Include *i <CMD> ; CMD - cmd.exe - broken?
+
+; WinActivate("ahk_exe flashplayer_32_sa.exe")
+; ; up()
+; while 1 {
+;   if !WinActive("ahk_exe flashplayer_32_sa.exe")
+;     continue
+;   SendDll("{x up}{z down}{x down}")
+;   Sleep(10)
+; }
+; down() {
+;   if WinActive("ahk_exe flashplayer_32_sa.exe")
+;     SendDll("{up up}{down down}")
+;   SetTimer(up, -1500)
+; }
+; up() {
+;   if WinActive("ahk_exe flashplayer_32_sa.exe")
+;     SendDll("{up down}{down up}")
+;   SetTimer(down, -1500)
+; }
+
+; keyType.set("q", keyType.invert(1))
+; keyType.set("w", keyType.toggle(), keyType.invert(0))
+; keyType.set("s", keyType.toggle())
+; keyType.set("x", keyType.toggle(), keyType.invert(1))
+; keyType.set("e", keyType.turbo())
+; keyType.set("r", keyType.expire(1000))
+; keyType.set("t", keyType.expire(1000), keyType.invert(1))
+keyType.set("t", keyType.expire(1000), keyType.turbo(), keyType.toggle())
+keyType.set("y", keyType.expire(1000), keyType.turbo())
+keyType.set("u", keyType.turbo(), keyType.toggle())
+; keyType.set("c", keyType.turbo(), keywwType.invert(1))tt
+; add expire to any key type
+nullfunc := (*) {
+
+}
+; while 1
+;   ListHotkeys()
+;rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrwwertttqqttqqqqqqrrrrrrrrqqqqrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+;tq
+;
+;
+
+class hk {
+  static hotkeys := {}
+  static addHotkey(key, cb?, opts?, data?) {
+    Hotkey(key, cb?, opts?)
+    simplekey := key.replace("~", "")
+    if IsSet(cb) {
+      if !hk.hotkeys.HasProp(simplekey)
+        hk.hotkeys.%simplekey% := []
+      hk.hotkeys.%simplekey%.push([key, cb?, opts?, data?])
+    } else {
+      hk.hotkeys.DeleteProp(simplekey)
+    }
+    ; Print(hk.hotkeys)
+  }
+  static restore(key) {
+    try {
+      hk.hotkeys.%key%.pop()
+      data := hk.hotkeys.%key%[-1]
+    }
+    if IsSet(data)
+      Hotkey(data[1]?, data[2]?, data[3]?)
+    else {
+      Hotkey(key)
+      Hotkey(key, , "off")
+    }
+  }
+}
+
+; while 1
+;   ListHotkeys()
+class keyType {
+  static set(key, types*) {
+    static onRealDown := []
+    static onRealUp := []
+    static keyRealPressed := OptObj({})
+    ; static expire(key, delay) {
+    ;   keyStartTime := 0
+    ;   hk.addHotkey("~*$" key, (a*) {
+    ;     keyStartTime := A_TickCount
+    ;     while A_TickCount - keyStartTime < delay and GetKeyState(key, "p") {
+    ;       ; print(A_TickCount - keyStartTime)
+    ;     }
+    ;     SendDll("{" key " up}")
+    ;     Send("{" key " up}")
+    ;     if GetKeyState(key, "p")
+    ;       keyType.block(key, , (*) {
+    ;         Print("UP!!")
+    ;         keyType.unblock(key)
+    ;       })
+    ;   }, , "expire main")
+    ; }
+    static invert(key, startUnpressed := 0, ondown := nullfunc, onup := nullfunc) {
+      if startUnpressed
+        send("{" key " up}")
+      else if !GetKeyState(key, "p")
+        send("{" key " down}")
+      keyRealPressed.%key% := GetKeyState(key, "p")
+      hk.addHotkey("*$" key, (a*) {
+        keyRealPressed.%key% := 0
+        Send("{" key " up}")
+        onup(key)
+      })
+      hk.addHotkey("*$" key " up", (a*) {
+        keyRealPressed.%key% := 1
+        Send("{" key " down}")
+        ondown(key)
+      })
+      OnExit((*) {
+        send("{" key " up}")
+      })
+    }
+
+    obj := (joinObjs(types*))
+    obj := OptObj(obj)
+    print(obj.invert)
+    if obj.invert {
+      invert(key, obj.startUnpressed, (key) {
+        for cb in onRealDown
+          cb(key)
+      }, (key) {
+        for cb in onRealup
+          cb(key)
+      })
+    } else {
+      hk.addHotkey("~*$" key, (a*) {
+        keyRealPressed.%key% := 1
+        for cb in onRealDown
+          cb(key)
+      })
+      hk.addHotkey("~*$" key " up", (a*) {
+        keyRealPressed.%key% := 0
+        for cb in onRealup
+          cb(key)
+      })
+    }
+    if obj.turbo {
+      ; pressed := GetKeyState(key, "p")
+      onRealDown.Push((forKey) {
+        if forKey != key
+          return
+        keyStartTime := A_TickCount
+        while keyRealPressed.%key% {
+          Send("{Blind}{" key " down}")
+          Send("{Blind}{" key " up}")
+          if obj.expire && A_TickCount - keyStartTime >= obj.expireDelay {
+            ; keyType.block(key, , (*) {
+            ;   keyType.unblock(key)
+            ; })
+            break
+          }
+        }
+        ; Sleep(10)
+      })
+      OnExit((*) {
+        send("{" key " up}")
+      })
+    }
+    if obj.expire {
+      keyStartTime := 0
+      onRealDown.Push((forKey) {
+        if forKey != key
+          return
+        keyStartTime := A_TickCount
+        print(keyRealPressed.%key%, key)
+        while A_TickCount - keyStartTime < obj.expireDelay and keyRealPressed.%key% {
+          print("zxcnzxcc", A_TickCount - keyStartTime)
+        }
+        if keyRealPressed.%key%{
+          if obj.invert || obj.toggle {
+            send("{Blind}{" key " up}")
+            pressed := 0
+          } else
+            keyType.block(key, , (*) {
+              Print("UP!!")
+              keyType.unblock(key)
+            })
+        }
+        Send("{Blind}{" key " up}")
+      })
+    }
+    if obj.toggle {
+      pressed := GetKeyState(key, "p")
+      if obj.invert
+        pressed := !pressed
+      if obj.startUnpressed
+        pressed := !pressed
+      hk.addHotkey("*$" key, (*) {
+        print("pressed", pressed)
+        keyType.block(key, , (*) {
+          keyType.unblock(key)
+        })
+        if pressed {
+          Send("{Blind}{" key " up}")
+          keyRealPressed.%key% := 0
+          for cb in onRealUp
+            cb(key)
+        } else {
+          Send("{Blind}{" key " down}")
+          keyRealPressed.%key% := 1
+          for cb in onRealDown
+            cb(key)
+        }
+        pressed := !pressed
+        OnExit((*) {
+          send("{" key " up}")
+        })
+      }, "p9")
+    }
+    ; else if obj.exactly {
+    ;   onRealDown.Push((forKey) {
+    ;     if forKey != key
+    ;       return
+    ;     keyStartTime := A_TickCount
+    ;     print(keyRealPressed.%key%, key)
+    ;     while A_TickCount - keyStartTime < obj.holdTime {
+    ;       ; print(A_TickCount - keyStartTime)
+    ;     }
+    ;     if keyRealPressed.%key%{
+    ;       if obj.invert
+    ;         send("{" key " up}")
+    ;       else
+    ;         keyType.block(key, , (*) {
+    ;           Print("UP!!")
+    ;           keyType.unblock(key)
+    ;         })
+    ;     }
+    ;     Send("{" key " up}")
+    ;   })
+    ; } else if obj.minPressTime {
+    ;   onRealDown.Push((forKey) {
+    ;     if forKey != key
+    ;       return
+    ;     keyStartTime := A_TickCount
+    ;     print(keyRealPressed.%key%, key)
+    ;     while A_TickCount - keyStartTime < obj.holdTime {
+    ;       ; print(A_TickCount - keyStartTime)
+    ;     }
+    ;     while keyRealPressed.%key%{
+    ;     }
+    ;   })
+
+    ; }
+    ; if obj.toggle {
+    ;   toggle(key)
+    ; } else if obj.turbo {
+    ;   turbo(key)
+    ; } else if obj.invert {
+    ; } else if obj.expire and obj.invert {
+    ; }
+
+  }
+  ; stops user from pressing key and calls onup when the user releases key onup deactivates when key unblocked
+  static block(key, on := 1, onup := nullfunc) {
+    static blocker := (*) {
+    }
+    print("BLOCK", on, key)
+    if on {
+      hk.addHotkey("*$" key, blocker, "on p9", "blocker")
+      hk.addHotkey("*$" key " up", onup, "on p9", "blocker")
+    } else {
+      hk.restore("*$" key)
+      hk.restore("*$" key " up")
+    }
+  }
+  static unblock(key) {
+    keyType.block(key, 0)
+  }
+  ; key can only be pressed for delay
+  static expire(delay := 1000) {
+    return { expire: 1, expireDelay: delay }
+
+    ; while GetKeyState(key, "p") {
+    ;   SendDll("{" key " up}")
+    ; }
+
+  }
+  ; inverts key state
+  static invert(startUnpressed := 0) {
+    return { invert: 1, startUnpressed: startUnpressed }
+  }
+  ; turns key from hold to toggle
+  static toggle() {
+    return { toggle: 1 }
+  }
+  ; spams key if held/toggled on
+  static turbo() {
+    return { turbo: 1 }
+  }
+  ; makes all keypresses last exactly time
+  ; static exactly(time) {
+  ;   return { exactly: 1, holdTime: time }
+  ; }
+  ; makes all keypresses last at least time, but can be more if key held longer
+  ; static minPressTime(time) {
+  ;   return { minPressTime: 1, holdTime: time }
+  ; }
+}
