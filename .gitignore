@@ -3,4 +3,9 @@ rctest/*.mp4
 rctest/*.zip
 rctest/ffmpeg.exe
 rctest/*.exe
+**/*.exe
 rctest/temp/*
+**/install locations.json
+**/settings.json
+**/plsts
+**/songplst*.json
