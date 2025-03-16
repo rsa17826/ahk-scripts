@@ -320,11 +320,11 @@ class WinEvent {
       else if !IsSet(eventMax)
         eventMax := eventMin
       if !HasMethod(callbackFunc)
-        throw ValueError("The callbackFunc argument must be a function", -1)
+        throw(ValueError("The callbackFunc argument must be a function",) - 1)
       this.callback := callbackFunc, this.winTitle := winTitle, this.flags := flags, this.eventMin := eventMin, this.eventMax := eventMax, this.threadId := 0
       if winTitle != 0 {
         if !(this.winTitle := WinExist(winTitle))
-          throw TargetError("Window not found", -1)
+          throw(TargetError("Window not found", -1))
         this.threadId := DllCall("GetWindowThreadProcessId", "Int", this.winTitle, "UInt*", &PID)
       }
       this.pCallback := CallbackCreate(callbackFunc, "C", 7)
@@ -438,7 +438,7 @@ class WinEvent {
   }
   ; Internal use: handles the event called by SetWinEventHook.
   static __HandleWinEvent(hWinEventHook, event, hwnd, idObject, idChild, idEventThread, dwmsEventTime) {
-    Critical -1
+    Critical(-1)
     static OBJID_WINDOW := 0, OBJID_CURSOR := 0xFFFFFFF7, INDEXID_CONTAINER := 0, EVENT_OBJECT_CREATE := 0x8000, EVENT_OBJECT_DESTROY := 0x8001
       , EVENT_OBJECT_SHOW := 0x8002, EVENT_OBJECT_FOCUS := 0x8005, EVENT_OBJECT_LOCATIONCHANGE := 0x800B, EVENT_SYSTEM_MINIMIZESTART := 0x0016
       , EVENT_SYSTEM_MINIMIZEEND := 0x0017, EVENT_SYSTEM_MOVESIZESTART := 0x000A, EVENT_SYSTEM_MOVESIZEEND := 0x000B, EVENT_SYSTEM_FOREGROUND := 0x0003
