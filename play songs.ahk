@@ -37,6 +37,7 @@ Hotkey("rbutton", (*) {
     }
   }
   s.restart()
+  Sleep(600)
   lasttit := WinGetTitle("ahk_exe vlc.exe")
   send("^!{Right}")
   Sleep(300)

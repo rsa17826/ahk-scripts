@@ -25,27 +25,6 @@ SetTimer(RunTasks(*) {
 ;     try WinClose("ahk_exe AutoHotkey64.exe ahk_class #32770")
 ; })
 
-; close celeste error log
-tasks.push(() {
-  ; if WinActive("D:\Games\Celeste\errorLog.txt - Notepad++") {
-  ;   send("{ctrl down}")
-  ;   send("w")
-  ;   send("{ctrl up}")
-  ;   sleep(200)
-  ;   while WinExist("ahk_exe notepad++.exe")
-  ;     try WinClose("ahk_exe notepad++.exe")
-  ;   run("`"C:\Users\User\Downloads\SmartSteamEmu\SSELauncher.exe`" -appid 504230", "C:\Users\User\Downloads\SmartSteamEmu")
-  ; }
-  if WinActive("errorLog.txt - VSCodium") {
-    send("{ctrl down}")
-    send("w")
-    send("{ctrl up}")
-    sleep(200)
-    try WinKill()
-    run("`"D:\Games\Celeste\steamclient_loader_x64.exe`"")
-  }
-})
-
 ; kill active window
 ^!F4::{
   if winactive("ahk_class Shell_TrayWnd") || winactive("ahk_class Progman")
@@ -432,25 +411,6 @@ tasks.push(() {
   ;   WinSetAlwaysOnTop(1, "ahk_class #32770")
 })
 
-; f11::WinMaximize("a")
-
-; reload active window
-^+NumpadAdd::{
-  SendDll("{shift up}{ctrl up}{NumpadAdd up}")
-  pp := WinGetProcessPath("A")
-  WinClose("a")
-  Run("`"" pp "`"", pp.RegExReplace("\\[^\\]+$", ""))
-  ; active := WinActive("a")
-  ; exe := WinGetProcessPath(active)
-  ; try WinClose(active)
-  ; try WinKill(active)
-  ; WinWaitClose(active)
-  ; Run(exe, exe.RegExReplace("\\[^\\]+$", ""), "low")
-  ; MsgBox(exe)
-  ; while !WinExist("ahk_exe " exe, , 3)
-  ;   Run(exe, exe.RegExReplace("\\[^\\]+$", ""), "low")
-}
-
 ; godot close sucess
 tasks.push(() {
   if WinExist("Success! ahk_class Engine")
@@ -486,17 +446,12 @@ tasks.Push(() {
 $^CtrlBreak::{
   a := A_DetectHiddenWindows
   DetectHiddenWindows(1)
-  if WinExist("\" "testing.ahk" " - AutoHotkey v" A_AhkVersion)
-    sudo(
-      "
-(
-
-DetectHiddenWindows(1)
-try WinClose(WinExist("\" "testing.ahk" " - AutoHotkey v" A_AhkVersion))
-)"
-    )
-  else
+  if WinExist("\" "testing.ahk" " - AutoHotkey v" A_AhkVersion) {
+    DetectHiddenWindows(1)
+    try WinClose(WinExist("\" "testing.ahk" " - AutoHotkey v" A_AhkVersion))
+  } else {
     Send("^{CtrlBreak}")
+  }
   DetectHiddenWindows(a)
 }
 
@@ -556,3 +511,7 @@ tasks.Push(() {
   HIDER_on := false
   HIDER_ui.hide()
 }
+
+#HotIf WinActive('ahk_exe Cookie Clicker.exe')
+  F11::WinMove(1340, 774, 500, 300)
+#HotIf
