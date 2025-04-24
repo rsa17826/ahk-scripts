@@ -2,6 +2,7 @@
 #SingleInstance Force
 ; #NoTrayIcon
 #Include *i <AutoThemed>
+#Include <admin>
 #Include <textfind>
 #Include <base>
 #Include <Misc>
@@ -154,18 +155,36 @@ tasks.push(() {
 
 ; speedhack hotkeys
 
-; ControlGetClassNN("Button4", "Cheat Engine 7.5") ; enable
-#HotIf WinExist("Cheat Engine 7.5")
+; ControlGetClassNN("Button4", "Cheat Engine") ; enable
+#HotIf WinExist("Cheat Engine")
   ^numpad1::cheatengine_setspeed('1')
   ^numpad2::cheatengine_setspeed('1.7')
   ^numpad3::cheatengine_setspeed('3')
   ^numpad4::cheatengine_setspeed('50')
   ^numpad0::cheatengine_setspeed('0')
   cheatengine_setspeed(speed) {
+    DetectHiddenWindows(0)
     lastwin := WinGetPID('A')
-    ControlSetText(speed, "Edit1", "Cheat Engine 7.5")
-    ControlClick("Button3", "Cheat Engine 7.5")
+    loop 5 {
+      if ControlGetText("Button" A_Index, "Cheat Engine") == "Enable Speedhack" {
+        enable := "Button" A_Index
+        break
+      }
+    }
+
+    if !ControlGetChecked(enable, "Cheat Engine")
+      ControlSetChecked(1, enable, "Cheat Engine")
+
+    loop 5 {
+      if ControlGetText("Button" A_Index, "Cheat Engine") == "Apply" {
+        Apply := "Button" A_Index
+        break
+      }
+    }
+    ControlSetText(speed, "Edit1", "Cheat Engine")
+    ControlClick(Apply, "Cheat Engine")
     WinActivate('ahk_pid ' . lastwin)
+    DetectHiddenWindows(1)
   }
 #HotIf
 
@@ -319,55 +338,48 @@ todark(win) {
   ; }
 }
 
-; allow resize
-#q::WinSetStyle('+0x40000', 'a')
-; ^+q:: WinSetStyle('-0x40000', 'a')
-; ^+f:: WinMove(100, 100, 500, 500, "a")
-
-tasks.Push()
-
-#HotIf WinActive('ahk_exe explorer.exe')
-  !del::{
-    ecount := WinGetCount("ahk_exe explorer.exe")
-    send("!{enter}")
-    sleep(400)
-    if ecount == WinGetCount("ahk_exe explorer.exe")
-      return
-    temp := A_Clipboard
-    send("{tab}")
-    sleep(100)
-    send("^c")
-    i := 0
-    while i < 30 && A_Clipboard == temp {
-      Sleep(100)
-      i++
-    }
-    if i >= 30
-      return
-    FileRecycle(A_Clipboard
-      .RegExReplace("`"$", "")
-      .RegExReplace("^`"", "")
-      .RegExReplace("\\$", ""))
-    A_Clipboard := temp
-    send("{esc}")
-    sleep(200)
-    send("{del}")
-    ; ecount := WinGetCount("ahk_exe explorer.exe")
-    ; win1 := WinGetList("ahk_exe explorer.exe")[1]
-    ; send("{tab}{tab}{tab}{tab}{tab}f!{up}")
-    ; while ecount == WinGetCount("ahk_exe explorer.exe") {
-    ; }
-    ; sleep(700)
-    ; send("!{tab}{Esc}{Esc}{Esc}{Esc}{Esc}{Esc}{Esc}")
-    ; win2 := WinGetList("ahk_exe explorer.exe")[1]
-    ; send("!{up}")
-    ; sleep(500)
-    ; WinActivate(win2)
-    ; WinClose(win2)
-    ; send("!{F4}")
-    ; WinClose("ahk_id " win2)
-    ; send("{del}")
-  }
+; #HotIf WinActive('ahk_exe explorer.exe')
+;   !del::{
+;     ecount := WinGetCount("ahk_exe explorer.exe")
+;     send("!{enter}")
+;     sleep(400)
+;     if ecount == WinGetCount("ahk_exe explorer.exe")
+;       return
+;     temp := A_Clipboard
+;     send("{tab}")
+;     sleep(100)
+;     send("^c")
+;     i := 0
+;     while i < 30 && A_Clipboard == temp {
+;       Sleep(100)
+;       i++
+;     }
+;     if i >= 30
+;       return
+;     FileRecycle(A_Clipboard
+;       .RegExReplace("`"$", "")
+;       .RegExReplace("^`"", "")
+;       .RegExReplace("\\$", ""))
+;     A_Clipboard := temp
+;     send("{esc}")
+;     sleep(200)
+;     send("{del}")
+;     ; ecount := WinGetCount("ahk_exe explorer.exe")
+;     ; win1 := WinGetList("ahk_exe explorer.exe")[1]
+;     ; send("{tab}{tab}{tab}{tab}{tab}f!{up}")
+;     ; while ecount == WinGetCount("ahk_exe explorer.exe") {
+;     ; }
+;     ; sleep(700)
+;     ; send("!{tab}{Esc}{Esc}{Esc}{Esc}{Esc}{Esc}{Esc}")
+;     ; win2 := WinGetList("ahk_exe explorer.exe")[1]
+;     ; send("!{up}")
+;     ; sleep(500)
+;     ; WinActivate(win2)
+;     ; WinClose(win2)
+;     ; send("!{F4}")
+;     ; WinClose("ahk_id " win2)
+;     ; send("{del}")
+;   }
 
 #HotIf WinActive("ahk_exe VSCodium.exe")
   ^8::{
@@ -383,15 +395,15 @@ tasks.Push()
 
 #HotIf
 
-; close KeePassOTP cant fetch error popup
-tasks.push(() {
-  if WinExist("KeePassOTP ahk_exe KeePass.exe") {
-    WinClose("KeePassOTP ahk_exe KeePass.exe")
-    ; WinActivate("KeePassOTP ahk_exe KeePass.exe")
-    ; WinWaitActive("KeePassOTP ahk_exe KeePass.exe")
-    ; send("{Enter}")
-  }
-})
+; ; close KeePassOTP cant fetch error popup
+; tasks.push(() {
+;   if WinExist("KeePassOTP ahk_exe KeePass.exe") {
+;     WinClose("KeePassOTP ahk_exe KeePass.exe")
+;     ; WinActivate("KeePassOTP ahk_exe KeePass.exe")
+;     ; WinWaitActive("KeePassOTP ahk_exe KeePass.exe")
+;     ; send("{Enter}")
+;   }
+; })
 tasks.push(() {
   if WinExist("ahk_class SunAwtDialog ahk_exe Minecraft.exe") {
     WinActivate("ahk_class SunAwtDialog ahk_exe Minecraft.exe")
@@ -515,3 +527,41 @@ tasks.Push(() {
 #HotIf WinActive('ahk_exe Cookie Clicker.exe')
   F11::WinMove(1340, 774, 500, 300)
 #HotIf
+
+#down::{
+  WinMinimize("a")
+}
+
+#!$LButton up::send("{LButton down}")
+#!$RButton up::send("{RButton down}")
+#HotIf WinActive('ahk_exe brave.exe')
+  F1::f24
+#HotIf
+; allow resize
+*#q::WinSetStyle('+0x40000', 'a')
+; ^+q:: WinSetStyle('-0x40000', 'a')
+; ^+f:: WinMove(100, 100, 500, 500, "a")
+
+if WinExist("ahk_exe ShaderGlass.exe ahk_class SHADERGLASS")
+  ProcessClose("ShaderGlass.exe")
+^+!/::{
+  DetectHiddenWindows(0)
+  win := "ahk_exe ShaderGlass.exe ahk_class SHADERGLASS"
+
+  if WinExist(win)
+    ProcessClose("ShaderGlass.exe")
+  else {
+    a := WinExist("a")
+    Run("`"D:\programs\shaderglass\ShaderGlass.exe`" inwhi.sgp", "D:\programs\shaderglass", "NoActivate")
+    WinWait(win)
+    WinMove(0, 0, A_ScreenWidth, A_ScreenHeight, win)
+    ControlSend("{shift up}{ctrl up}{alt up}{/ up}m", , win)
+    HMenue := DllCall("GetSystemMenu", "Ptr", WinExist(win), "UInt", 0, "UPtr")
+    DllCall("DeleteMenu", "Ptr", HMenue, "UInt", 0xF060, "UInt", 0) ; CLOSE
+    DetectHiddenWindows(1)
+    WinSetStyle("-0xC40000", win) ; -0xC40000 - no title bar
+    WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
+    ; MsgBox(JSON.stringify(WinGetList("ahk_exe ShaderGlass.exe")))
+    WinActivate(a)
+  }
+}

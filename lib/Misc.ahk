@@ -861,7 +861,8 @@ rerange(val, low1, high1, low2, high2) {
 
 MouseMoveDll(x, y, rel := 0) {
   if rel
-    DllCall("mouse_event", "uint", 0x8000, "uint", rerange(x, 0, A_ScreenWidth, 0, 65535), "uint", rerange(y, 0, A_ScreenHeight, 0, 65535))
+    DllCall("mouse_event", "UInt", 0x01, "UInt", x, "UInt", y)
+  ; DllCall("mouse_event", "uint", 0x8000, "uint", rerange(x, 0, A_ScreenWidth, 0, 65535), "uint", rerange(y, 0, A_ScreenHeight, 0, 65535))
   else
     DllCall("mouse_event", "uint", 0x0001 | 0x8000, "uint", rerange(x, 0, A_ScreenWidth, 0, 65535), "uint", rerange(y, 0, A_ScreenHeight, 0, 65535))
 }
@@ -877,29 +878,29 @@ SendDll(keys, Delay := A_KeyDelay, PressDuration := A_KeyDuration) {
     PressDuration := 20
   modifiers := []
   ;
-  keys := keys
-    .RegExReplace("([+^#!]+)([^{]|\{.*?\})", (reg) {
-      reps := []
-      for rep in reg[1].split("") {
-        rep := rep
-          .Replace("^", "ctrl")
-          .Replace("+", "shift")
-          .Replace("!", "alt")
-          .Replace("#", "lwin")
-        reps.push(rep)
-      }
-      str := ''
-      for rep in reps {
-        str .= "{" rep " down}"
-      }
-      str .= reg[2]
-      for rep in reps {
-        str .= "{" rep " up}"
-      }
-      return str
-    })
-    .RegExMatchAll("[^{]|\{.*?\}").map(e => e[0])
-  ; Print("keys", keys)
+  keys := String(keys)
+  .RegExReplace("([+^#!]+)([^{]|\{.*?\})", (reg) {
+    reps := []
+    for rep in reg[1].split("") {
+      rep := rep
+        .Replace("^", "ctrl")
+        .Replace("+", "shift")
+        .Replace("!", "alt")
+        .Replace("#", "lwin")
+      reps.push(rep)
+    }
+    str := ''
+    for rep in reps {
+      str .= "{" rep " down}"
+    }
+    str .= reg[2]
+    for rep in reps {
+      str .= "{" rep " up}"
+    }
+    return str
+  })
+  .RegExMatchAll("[^{]|\{.*?\}").map(e => e[0])
+  Print("keys", keys)
   for key in keys {
     down(key) {
       VK := Format("0x{:02X}", GetKeyVK(key))
@@ -935,7 +936,6 @@ SendDll(keys, Delay := A_KeyDelay, PressDuration := A_KeyDuration) {
           sleep(PressDuration)
           up(key[1])
           sleep(delay)
-
         }
         down(key[1])
         sleep(PressDuration)
@@ -2121,7 +2121,7 @@ createFileAssoc(fileExt, programPath, typeName := fileExt " file") {
 class OptObj extends Object {
   __New(obj, default := 0) {
     joinObjs(this._, obj)
-    this.__default := default
+    this.__default := IsSet(default) ? default : unset
   }
   _ := {}
   __default := 0
@@ -2230,4 +2230,28 @@ isEmpty(p, filesOnly := 1) {
     return 0
   }
   return 1
+}
+
+class MakeLink {
+  __New(from, to, type) {
+    switch type {
+      case MakeLink.hardlink:
+        return RunWait('cmd /c "mklink /H "' path.info(to).abspath '" "' path.info(from).abspath '""', , "hide")
+      case MakeLink.junction:
+        return RunWait('cmd /c "mklink /J "' path.info(to).abspath '" "' path.info(from).abspath '""', , "hide")
+      case MakeLink.symlink:
+        if path.info(from).isdir
+          return RunWait('cmd /c "mklink /D "' path.info(to).abspath '" "' path.info(from).abspath '""', , "hide")
+        return RunWait('cmd /c "mklink "' path.info(to).abspath '" "' path.info(from).abspath '""', , "hide")
+      default:
+        throw("invalid type " type)
+    }
+  }
+  static hardlink := 0
+  static junction := 2
+  static symlink := 1
+}
+
+confirm(text, title?) {
+  return MsgBox(text, title?, 0x4) = "yes"
 }

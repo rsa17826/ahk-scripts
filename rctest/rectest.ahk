@@ -3,7 +3,7 @@
 #Requires Autohotkey v2.0
 #Include <Misc>
 SetWorkingDir(A_ScriptDir)
-; #Include "end.ahk"
+#Include "end.ahk"
 
 IncludeWindowInFileName := false
 DetectHiddenWindows(1)

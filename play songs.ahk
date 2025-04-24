@@ -52,8 +52,8 @@ Hotkey("rbutton", (*) {
       Reload()
     }
   }
-  MsgBox(lasttit)
-  MsgBox(a)
+  ; MsgBox(lasttit)
+  ; MsgBox(a)
   send("^!{Left}")
   SetTitleMatchMode(1)
   WinMinimize("ahk_exe vlc.exe")
