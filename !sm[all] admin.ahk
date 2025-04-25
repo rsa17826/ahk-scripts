@@ -27,7 +27,7 @@ SetTimer(RunTasks(*) {
 ; })
 
 ; kill active window
-^!F4:: {
+^!F4::{
   if winactive("ahk_class Shell_TrayWnd") || winactive("ahk_class Progman")
     return
   WinKill("A")
@@ -35,7 +35,7 @@ SetTimer(RunTasks(*) {
 
 ; audacity dont save
 #hotif WinActive("ahk_exe audacity.exe")
-!F4:: {
+!F4::{
   try ProcessClose("audacity.exe")
 }
 tasks.push(() {
@@ -70,7 +70,7 @@ tasks.Push(() {
 
 ; autoattack sog
 #hotif winactive("ahk_exe Secrets Of Grindea.exe")
-*$z:: {
+*$z::{
   while getkeystate('z', 'p')
     sendevent('{numpad0}')
 }
@@ -89,7 +89,7 @@ SetNumLockState("AlwaysOn")
 ;   global dontsendwin := 1
 ; }
 nott := ToolTip.bind("") ; nott -> NOToolTip
-$!/:: {
+$!/::{
   ; global windown
   ; if !windown
   ;   return send("{space}")
@@ -138,10 +138,10 @@ tasks.push(() {
 ; })
 
 ; sharex autorenamer
-~!PrintScreen:: {
+~!PrintScreen::{
   Sleep(300)
   loop files "D:\Downloads\images\screenshots\*.*", 'fr' {
-    if (A_LoopFilePath.includes("_")) {
+    if(A_LoopFilePath.includes("_")) {
       newname := A_LoopFilePath.replace("_", ' ')
       DirCreate(newname.RegExReplace("[\\/][^\\/]+$", ''))
       FileMove(A_LoopFileFullPath, newname, 1)
@@ -157,11 +157,11 @@ tasks.push(() {
 
 ; ControlGetClassNN("Button4", "Cheat Engine") ; enable
 #HotIf WinExist("Cheat Engine")
-^numpad1:: cheatengine_setspeed('1')
-^numpad2:: cheatengine_setspeed('1.7')
-^numpad3:: cheatengine_setspeed('3')
-^numpad4:: cheatengine_setspeed('50')
-^numpad0:: cheatengine_setspeed('0')
+^numpad1::cheatengine_setspeed('1')
+^numpad2::cheatengine_setspeed('1.7')
+^numpad3::cheatengine_setspeed('3')
+^numpad4::cheatengine_setspeed('50')
+^numpad0::cheatengine_setspeed('0')
 cheatengine_setspeed(speed) {
   DetectHiddenWindows(0)
   lastwin := WinGetPID('A')
@@ -202,7 +202,7 @@ tasks.push(() {
 
 ; tunic ladder fly
 #HotIf WinActive("ahk_exe Tunic.exe")
-a:: {
+a::{
   send("{z down}")
   send("{x down}")
   while GetKeyState("a", "P") {
@@ -300,7 +300,7 @@ OnNewWindow((lParam) {
 
   ; auto aot for xdm download window
   try {
-    if (WinGetProcessPath(lParam) == "C:\Program Files (x86)\XDM\java-runtime\bin\javaw.exe") {
+    if(WinGetProcessPath(lParam) == "C:\Program Files (x86)\XDM\java-runtime\bin\javaw.exe") {
       WinSetAlwaysOnTop(1, lParam)
     }
   }
@@ -316,9 +316,9 @@ todark(win) {
   DarkColors := Map("Background", "0x202020", "Controls", "0x404040", "Font", "0xE0E0E0")
   TextBackgroundBrush := DllCall("gdi32\CreateSolidBrush", "UInt", DarkColors["Background"], "Ptr")
 
-  if (VerCompare(A_OSVersion, "10.0.17763") >= 0) {
+  if(VerCompare(A_OSVersion, "10.0.17763") >= 0) {
     DWMWA_USE_IMMERSIVE_DARK_MODE := 19
-    if (VerCompare(A_OSVersion, "10.0.18985") >= 0) {
+    if(VerCompare(A_OSVersion, "10.0.18985") >= 0) {
       DWMWA_USE_IMMERSIVE_DARK_MODE := 20
     }
     DllCall("dwmapi\DwmSetWindowAttribute", "Ptr", WinExist(win), "Int", DWMWA_USE_IMMERSIVE_DARK_MODE, "Int*", True, "Int", 4)
@@ -382,14 +382,14 @@ todark(win) {
 ;   }
 
 #HotIf WinActive("ahk_exe VSCodium.exe")
-^8:: {
+^8::{
   send("/**")
   sleep(100)
   send("{tab}")
 }
 
 ; add () to ahk function call
-^+F8:: {
+^+F8::{
   send("{end}{home}^{right}+{end}({f8}")
 }
 
@@ -455,7 +455,7 @@ tasks.Push(() {
 ; #+s::^PrintScreen
 
 ; close testing.ahk
-$^CtrlBreak:: {
+$^CtrlBreak::{
   a := A_DetectHiddenWindows
   DetectHiddenWindows(1)
   if WinExist("\" "testing.ahk" " - AutoHotkey v" A_AhkVersion) {
@@ -471,7 +471,7 @@ $^CtrlBreak:: {
 
 ; type clip text
 SetKeyDelay(0, 0)
-^!v:: {
+^!v::{
   SendDll("{ctrl up}{alt up}{v up}")
   text := A_Clipboard.replace("`r`n", "`n").split("")
   for i in text {
@@ -481,7 +481,7 @@ SetKeyDelay(0, 0)
 }
 
 ; type clip text but slower
-^+!v:: {
+^+!v::{
   SendDll("{ctrl up}{alt up}{v up}")
   text := A_Clipboard.replace("`r`n", "`n").split("")
   for i in text {
@@ -492,8 +492,8 @@ SetKeyDelay(0, 0)
 
 ; change volume step
 #InputLevel 100
-$*Volume_Down:: SoundSetVolume(SoundGetVolume() - 1)
-$*Volume_Up:: SoundSetVolume(SoundGetVolume() + 1)
+$*Volume_Down::SoundSetVolume(SoundGetVolume() - 1)
+$*Volume_Up::SoundSetVolume(SoundGetVolume() + 1)
 
 ; hider
 HIDER_ui := Gui()
@@ -504,7 +504,7 @@ HIDER_on := false
 
 tasks.Push(() {
   global HIDER_on
-  if (HIDER_on) {
+  if(HIDER_on) {
     HIDER_ui.Show("W" . A_ScreenWidth . " H" . A_ScreenHeight + 100)
     ; WinSetTransparent(200, HIDER_ui)
   } else {
@@ -512,33 +512,33 @@ tasks.Push(() {
   }
 })
 
-^numpad9:: {
+^numpad9::{
   global HIDER_on
   HIDER_on := true
   HIDER_ui.Show("W" . A_ScreenWidth . " H" . A_ScreenHeight + 100)
 }
 
-^Numpad8:: {
+^Numpad8::{
   global HIDER_on
   HIDER_on := false
   HIDER_ui.hide()
 }
 
 #HotIf WinActive('ahk_exe Cookie Clicker.exe')
-F11:: WinMove(1340, 774, 500, 300)
+F11::WinMove(1340, 774, 500, 300)
 #HotIf
 
-#down:: {
+#down::{
   WinMinimize("a")
 }
 
-#!$LButton up:: send("{LButton down}")
-#!$RButton up:: send("{RButton down}")
+#!$LButton up::send("{LButton down}")
+#!$RButton up::send("{RButton down}")
 #HotIf WinActive('ahk_exe brave.exe')
 F1::f24
 #HotIf
 ; allow resize
-*#q:: WinSetStyle('+0x40000', 'a')
+*#q::WinSetStyle('+0x40000', 'a')
 ; ^+q:: WinSetStyle('-0x40000', 'a')
 ; ^+f:: WinMove(100, 100, 500, 500, "a")
 
@@ -546,7 +546,7 @@ if WinExist("ahk_exe ShaderGlass.exe ahk_class SHADERGLASS")
   ProcessClose("ShaderGlass.exe")
 DllCall("ShowCursor", "UInt", 1)
 
-^+!/:: {
+^+!/::{
   DetectHiddenWindows(0)
   win := "ahk_exe ShaderGlass.exe ahk_class SHADERGLASS"
 
