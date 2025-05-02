@@ -563,13 +563,17 @@ DllCall("ShowCursor", "UInt", 1)
     WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
     WinSetAlwaysOnTop(1, win)
     ; MsgBox(JSON.stringify(WinGetList("ahk_exe ShaderGlass.exe")))
-    DetectHiddenWindows(1)
     SetTimer(() {
       try
         WinSetAlwaysOnTop(1, win)
       catch
         settimer(, 0)
     }, 50)
-    WinActivate(a)
+    if WinExist(a)
+      WinActivate(a)
+    DetectHiddenWindows(1)
   }
 }
+tasks.Push((){
+  try WinClose("Authorization required ahk_exe javaw.exe ahk_class SunAwtDialog")
+})

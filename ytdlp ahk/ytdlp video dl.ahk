@@ -2,7 +2,35 @@
 #Include <Misc>
 #Include <base>
 #Include <betterui>
-
+; https://www.twitch.tv/videos/2442602093?filter=archives&sort=time
+; https://www.twitch.tv/videos/2440867343?filter=archives&sort=time
+; https://www.twitch.tv/videos/2439669348?filter=archives&sort=time
+; https://www.twitch.tv/videos/2434741651?filter=archives&sort=time
+; https://www.twitch.tv/videos/2433005202?filter=archives&sort=time
+; https://www.twitch.tv/videos/2423263953?filter=archives&sort=time
+; https://www.twitch.tv/videos/2421455443?filter=archives&sort=time
+; https://www.twitch.tv/videos/2417935604?filter=archives&sort=time
+; https://www.twitch.tv/videos/2413676282?filter=archives&sort=time
+; https://www.twitch.tv/videos/2411513087?filter=archives&sort=time
+; https://www.twitch.tv/videos/2407666331?filter=archives&sort=time
+; https://www.twitch.tv/videos/2405817724?filter=archives&sort=time
+; https://www.twitch.tv/videos/2404118354?filter=archives&sort=time
+; https://www.twitch.tv/videos/2401658254?filter=archives&sort=time
+; https://www.twitch.tv/videos/2398991912?filter=archives&sort=time
+; https://www.twitch.tv/videos/2397419713?filter=archives&sort=time
+; https://www.twitch.tv/videos/2397354646?filter=archives&sort=time
+; https://www.twitch.tv/videos/2395728869?filter=archives&sort=time
+; https://www.twitch.tv/videos/2394826562?filter=archives&sort=time
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2411513087?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2407666331?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2405817724?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2404118354?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2401658254?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2398991912?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2397419713?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2397354646?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2395728869?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
+; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2394826562?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
 SetWorkingDir(A_ScriptDir)
 
 #SingleInstance Off
@@ -12,7 +40,7 @@ if !urls.length
 progress := 0
 texts := {}
 fails := []
-ui := betterui({ aot: 1, h: 20, w: 350, clickthrough: 1, transparency: 180 })
+ui := betterui({ aot: 0, h: 20, w: 350, clickthrough: 1, transparency: 180 })
 ui.ignoretextcolor := 1
 ui.SetFont("caaaaaa")
 ui.add("progress", {}, &progbar)
@@ -30,10 +58,10 @@ loop urls.length {
   texts.%url% := text
 }
 updateprogress()
-ui.show("x0 y0")
+ui.show("x0 y0 NoActivate")
 for url in urls {
   texts.%url%.setfont("cbbbb00")
-  cmd := "cmd /c `"cd `"" A_ScriptDir "`" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 `"" url "`" --no-mtime --add-metadata --output `".\%(title)s.%(ext)s`" --ffmpeg-location `"./ffmpeg.exe`" --paths `"D:\Downloads\Videos`" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove `"sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic`"`""
+  cmd := "cmd /c `"cd `"" A_ScriptDir "`" & yt-dlp --no-check-certificate -f `"bestvideo[height<=720]+bestaudio/best[height<=720]`" --merge-output-format mp4 `"" url "`" --no-mtime --add-metadata --output `".\%(title)s.%(ext)s`" --ffmpeg-location `"./ffmpeg.exe`" --paths `"D:\Downloads\Videos`" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove `"sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic`"`""
   ; A_Clipboard := cmd
   test := RunWait(cmd, , "min", &pid)
   progress += 1
