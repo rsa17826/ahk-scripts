@@ -45,7 +45,7 @@ class AutoHotInterception {
       MsgBox("Unable to find " dllFile ", exiting...")
       ExitApp()
     }
-    
+
     asm := CLR_LoadLibrary(dllFile)
     try {
       this.Instance := asm.CreateInstance("AutoHotInterception.Manager")
@@ -127,7 +127,12 @@ class AutoHotInterception {
     }
     return dev
   }
-
+  getDefaultMouse() {
+    return this.GetDeviceIdFromHandle(1, EnvGet("INTERCEPTON_MAIN_MOUSE_HANDLE"))
+  }
+  getDefaultKeyboard() {
+    return this.GetDeviceIdFromHandle(0, EnvGet("INTERCEPTON_MAIN_KEYBOARD_HANDLE"))
+  }
   GetDeviceIdFromHandle(isMouse, handle, instance := 1) {
     static devType := Map(0, "Keyboard", 1, "Mouse")
     dev := this.Instance.GetDeviceIdFromHandle(IsMouse, handle, instance)
@@ -159,7 +164,13 @@ class AutoHotInterception {
     arr := this.Instance.GetDeviceList()
     for v in arr {
       ; ToDo: Return a class, so code completion works?
-      DeviceList[v.id] := { ID: v.id, VID: v.vid, PID: v.pid, IsMouse: v.IsMouse, Handle: v.Handle }
+      DeviceList[v.id] := {
+        ID: v.id,
+        VID: v.vid,
+        PID: v.pid,
+        IsMouse: v.IsMouse,
+        Handle: v.Handle
+      }
     }
     return DeviceList
   }

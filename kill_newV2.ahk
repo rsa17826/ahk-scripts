@@ -8,10 +8,11 @@ DetectHiddenWindows(true)
 try TraySetIcon("D:\.ico\x ahk key.ico")
 ^+#!Escape::{
   RunWait("C:\Users\User\Desktop\non constant ahk scripts\@exit.ahk `"" A_ScriptFullPath "`"")
-  ; Sleep(1000)
+  while WinGetlist("ahk_class AutoHotkey", , ,).map(e => RegExReplace(WinGetTitle("ahk_id " e), " - AutoHotkey v" A_AhkVersion)).includes("C:\Users\User\Desktop\non constant ahk scripts\@exit.ahk") {
+  }
+  Sleep(1000)
   print(WinGetlist("ahk_class AutoHotkey", , ,))
   while WinGetlist("ahk_class AutoHotkey", , ,).map(e => RegExReplace(WinGetTitle("ahk_id " e), " - AutoHotkey v" A_AhkVersion)).includes("C:\Users\User\Desktop\non constant ahk scripts\@exit.ahk") {
-
   }
   run("C:\Users\User\Desktop\non constant ahk scripts\rerun.ahk")
 }

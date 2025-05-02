@@ -175,9 +175,15 @@ class OnMouseEvent {
   static Data := Buffer() ; Size is determined upon the first event's arrival.
   static SinkGui := Gui() ; WM_INPUT needs a hwnd to route to.
   static lParam := ( ; Gotta put these somewhere...
-    this.DefineProp("MouseMoved", { Call: this.MouseMoved.Bind(this) }),
-    this.DefineProp("MouseMovedReal", { Call: this.MouseMovedReal.Bind(this) }),
-    this.DefineProp("Exit", { Call: this.Exit.Bind(this) }),
+    this.DefineProp("MouseMoved", {
+      Call: this.MouseMoved.Bind(this)
+    }),
+    this.DefineProp("MouseMovedReal", {
+      Call: this.MouseMovedReal.Bind(this)
+    }),
+    this.DefineProp("Exit", {
+      Call: this.Exit.Bind(this)
+    }),
     OnExit(this.Exit))
 
   static Start() {
@@ -230,7 +236,9 @@ class OnMouseEvent {
 
     ; Re-route WM_INPUT to the correct function
     OnMessage(0x00FF, this.MouseMoved, 0)
-    this.DefineProp("MouseMoved", { Call: this.MouseMovedReal })
+    this.DefineProp("MouseMoved", {
+      Call: this.MouseMovedReal
+    })
     OnMessage(0x00FF, this.MouseMoved)
     this.MouseMoved.Call(wParam, lParam, msg, hwnd)
   }
