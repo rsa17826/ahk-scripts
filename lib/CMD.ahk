@@ -6,8 +6,8 @@ SetWorkingDir(A_ScriptDir)
 #Include <vars>
 
 DetectHiddenWindows(True)
-Run(A_ComSpec, , "Hide", &vlcpid)
-WinWait("ahk_pid " vlcpid)
+Run(A_ComSpec, , "Hide", &cmdpid)
+WinWait("ahk_pid " cmdpid)
 cmd.start()
 class cmd {
   /**
@@ -20,7 +20,7 @@ class cmd {
     this.start()
   }
   static stop() => DllCall("kernel32.dll\FreeConsole")
-  static start() => DllCall("kernel32.dll\AttachConsole", "UInt", vlcpid)
+  static start() => DllCall("kernel32.dll\AttachConsole", "UInt", cmdpid)
   static shell := ComObject("WScript.Shell")
   static setWorkingDir(dir := A_WorkingDir) {
     this.shell.CurrentDirectory := dir
@@ -67,7 +67,7 @@ class cmd {
     this.RunningCommand := this.shell.Exec(A_ComSpec " /C " commandString)
     return this.result
   }
-
+  
   RunningCommand := unset
 
   /**
