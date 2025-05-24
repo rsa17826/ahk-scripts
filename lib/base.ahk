@@ -41,7 +41,7 @@ class Array2 {
   static __Enum(*) {
   }
   ; #############
-  
+
   ; static __New() {
   ;   ; Add String2 methods and properties into String object
   ;   __ObjDefineProp := Object.Prototype.DefineProp
@@ -66,6 +66,9 @@ class Array2 {
       temp.push(this[start + A_Index - 1])
     }
     return temp
+  }
+  static random() {
+    return this[random(1, this.Length)]
   }
 
   /**
@@ -142,7 +145,9 @@ class Array2 {
   static Map(func) {
     if !HasMethod(func)
       throw(ValueError("Map: func must be a function", -1))
-    newarr := [this*]
+    newarr := [
+      this*
+    ]
     for i, v in this {
       newarr[i] := callFuncWithOptionalArgs(func, v?, i)
     }
@@ -374,7 +379,9 @@ class Array2 {
     unique := Map()
     for v in this
       unique[v] := 1
-    return [unique*]
+    return [
+      unique*
+    ]
   }
 
   /**
@@ -1104,7 +1111,9 @@ class Map2 {
    * @returns {Array}
    */
   static Keys {
-    get => [this*]
+    get => [
+      this*
+    ]
   }
 
   /**
@@ -1112,8 +1121,10 @@ class Map2 {
    * @returns {Array}
    */
   static Values {
-    get => [this.__Enum(2)
-    .Bind(&_)*]
+    get => [
+      this.__Enum(2)
+      .Bind(&_)*
+    ]
   }
 
   /**

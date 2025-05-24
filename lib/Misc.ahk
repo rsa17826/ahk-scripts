@@ -123,8 +123,17 @@ Print(values*) {
   if !hEdit {
     hEdit := DllCall("GetWindow", "ptr", A_ScriptHwnd, "uint", 5, "ptr")
     user32 := DllCall("GetModuleHandle", "str", "user32.dll", "ptr")
-    pfn := ['', ''], bkp := ['', '']
-    for i, fn in ["SetForegroundWindow", "ShowWindow"] {
+    pfn := [
+      '',
+      ''
+    ], bkp := [
+      '',
+      ''
+    ]
+    for i, fn in [
+      "SetForegroundWindow",
+      "ShowWindow"
+    ] {
       pfn[i] := DllCall("GetProcAddress", "ptr", user32, "astr", fn, "ptr")
       DllCall("VirtualProtect", "ptr", pfn[i], "ptr", 8, "uint", 0x40, "uint*", 0)
       bkp[i] := NumGet(pfn[i], 0, "int64")
@@ -678,7 +687,10 @@ callFuncWithOptionalArgs(func, args*) {
   garb := []
   loop 30 - args.Length {
     garb.push("")
-    try return func([args, garb].Flat()*)
+    try return func([
+      args,
+      garb
+    ].Flat()*)
   }
 
 }
@@ -1026,6 +1038,8 @@ class path {
     }
     return path.joincache.set(str)
   }
+
+  ; asd
   static info(paths*) {
     p := path.join(paths*)
     if path.infocache.has(p) {
@@ -1073,7 +1087,7 @@ input(text?, ifUnset?, title?, options?, default?) {
   temp := InputBox(text?, title?, options?, default?)
   if temp.Result = "OK"
     return temp.Value
-  return ifUnset
+  return isset(ifUnset) ? ifUnset : unset
 }
 
 WinHasClass(win, class) {
@@ -1153,7 +1167,9 @@ class JSON {
     as_map ? (map_set := (maptype := Map)
     .Prototype.Set) : (map_set := (obj, key, val) => obj.%key% := val, maptype := Object)
     NQ := "", LF := "", LP := 0, P := "", R := ""
-    D := [C := (A := InStr(text := LTrim(text, " `t`r`n"), "[") = 1) ? [] : maptype()], text := LTrim(SubStr(text, 2), " `t`r`n"), L := 1, N := 0, V := K := "", J := C, !(Q := InStr(text, '"') != 1) ? text := LTrim(text, '"') : ""
+    D := [
+      C := (A := InStr(text := LTrim(text, " `t`r`n"), "[") = 1) ? [] : maptype()
+    ], text := LTrim(SubStr(text, 2), " `t`r`n"), L := 1, N := 0, V := K := "", J := C, !(Q := InStr(text, '"') != 1) ? text := LTrim(text, '"') : ""
     loop parse text, '"' {
       Q := NQ ? 1 : !Q
       NQ := Q && (SubStr(A_LoopField, -3) = "\\\" || (SubStr(A_LoopField, -1) = "\" && SubStr(A_LoopField, -2) != "\\"))
@@ -2254,4 +2270,49 @@ class MakeLink {
 
 confirm(text, title?) {
   return MsgBox(text, title?, 0x4) = "yes"
+}
+listCursorSchemes() {
+  arr := []
+  loop reg, "HKEY_CURRENT_USER\Control Panel\Cursors\Schemes" {
+    arr.push(A_LoopRegName)
+  }
+  return arr
+}
+changeCursorScheme(Scheme) {
+  KeyNames := [
+    "Arrow",
+    "Help",
+    "AppStarting",
+    "Wait",
+    "Crosshair",
+    "IBeam",
+    "NWPen",
+    "No",
+    "SizeNS",
+    "SizeWE",
+    "SizeNWSE",
+    "SizeNESW",
+    "SizeAll",
+    "UpArrow",
+    "Hand"
+  ]
+  KEYpath := "HKEY_CURRENT_USER\Control Panel\Cursors"
+  SPI_SETCURSORS := 0x0057
+
+  SchemeVals := RegRead("HKEY_CURRENT_USER\Control Panel\Cursors\Schemes", Scheme)
+  if (!SchemeVals) {
+    SchemeVals := RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\Cursors\Schemes", Scheme)
+  }
+  SchemeVals := SchemeVals.split(",")
+
+  if (SchemeVals.Length > 0) {
+    RegWrite(Scheme, "REG_SZ", KEYpath)
+  }
+
+  for index, val in SchemeVals {
+    if (index < KeyNames.Length) {
+      RegWrite(val, "REG_EXPAND_SZ", KEYpath, KeyNames[index])
+    }
+  }
+  DllCall("SystemParametersInfo", "UInt", SPI_SETCURSORS, "UInt", "0", "UInt", 0, "UInt", "0")
 }

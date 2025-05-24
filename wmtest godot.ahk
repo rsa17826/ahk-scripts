@@ -2,11 +2,12 @@
 #SingleInstance Force
 #Include *i <AutoThemed>
 #Include <betterui>
+#Include <SingleInstance>
 #Include <admin>
 ; try TraySetIcon("D:\.ico\sharex.ico")
 global godotpid := 0
 send("{MButton up}")
-
+DetectHiddenWindows(1)
 kombarh := 30
 winwasactive := 0
 
@@ -22,11 +23,12 @@ while true {
     }
     if godotpid and WinGetMinMax(godotpid) == -1
       continue
-    if(WinExist("ahk_exe VSCodium.exe") and WinExist(" - Godot Engine ahk_class Engine")) {
+    if (WinExist("ahk_exe VSCodium.exe") and WinExist(" - Godot Engine ahk_class Engine")) {
       if WinGetMinMax("ahk_exe VSCodium.exe") != 0
         continue
       if WinGetMinMax(godotpid) == -1
         continue
+
       if WinGetMinMax(godotpid) == 1
         WinRestore(godotpid)
       size := 35
@@ -38,24 +40,27 @@ while true {
       WinMove(0, kombarh, (size / 100 * A_ScreenWidth), ((A_ScreenHeight - 50) - kombarh), "ahk_exe VSCodium.exe")
     }
   } catch Error as e {
-    MsgBox(e.Message)
+    ; MsgBox(e.Message)
     Reload()
-    ; MsgBox("e")
   }
-  for win in WinGetList("(DEBUG) ahk_class Engine") {
-    if !WinExist(win)
-      Reload()
-    if !WinGetAlwaysOnTop(win)
-      WinSetAlwaysOnTop(1, win)
+  try {
+    for win in WinGetList("(DEBUG) ahk_class Engine") {
+      if !WinExist(win)
+        Reload()
+      if !WinGetAlwaysOnTop(win)
+        WinSetAlwaysOnTop(0, win)
+    }
+    if WinActive("(DEBUG) ahk_class Engine") {
+      winwasactive := WinActive("(DEBUG) ahk_class Engine")
+    }
+    if ((WinActive("a") && WinExist("(DEBUG) ahk_class Engine") && !WinActive("(DEBUG) ahk_class Engine") && winwasactive == WinExist("(DEBUG) ahk_class Engine") && WinGetTitle(WinActive("a"))) && WinActive("ahk_exe VSCodium.exe")) {
+      for win in WinGetList("(DEBUG) ahk_class Engine")
+        try WinKill(win)
+    }
+    sleep(10)
+  } catch {
+    Reload()
   }
-  if WinActive("(DEBUG) ahk_class Engine") {
-    winwasactive := WinActive("(DEBUG) ahk_class Engine")
-  }
-  if((WinActive("a") && WinExist("(DEBUG) ahk_class Engine") && !WinActive("(DEBUG) ahk_class Engine") && winwasactive == WinExist("(DEBUG) ahk_class Engine") && WinGetTitle(WinActive("a"))) && WinActive("ahk_exe VSCodium.exe")) {
-    for win in WinGetList("(DEBUG) ahk_class Engine")
-      try WinKill(win)
-  }
-  sleep(10)
 }
 ; joy8::{
 ;   Print(godotpid , WinExist(godotpid) , WinGetMinMax(godotpid) != -1 , WinGetMinMax("ahk_exe VSCodium.exe") == 0)
@@ -64,11 +69,20 @@ while true {
 joy8::
 $F5::
 ^$F5::{
+  if WinActive("ahk_exe VSCodium.exe")
+    send("^s")
   ControlSend("{F5}", , godotpid)
   winwasactive := 0
 }
-$F6::
+$F6::{
+  if WinActive("ahk_exe VSCodium.exe")
+    send("^s")
+  ControlSend("{F5}", , godotpid)
+  winwasactive := 0
+}
 ^$F6::{
+  if WinActive("ahk_exe VSCodium.exe")
+    send("^s")
   ControlSend("{F6}", , godotpid)
   winwasactive := 0
 }

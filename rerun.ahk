@@ -13,8 +13,10 @@ sympathCache := cache()
 loop files, "C:\Users\" A_UserName "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\*.*", "f" {
   if A_LoopFileFullPath.endsWith("close apps that just need bg processes.ahk")
     continue
-  if A_LoopFileFullPath.endsWith("photopea.ahk")
+  if A_LoopFileFullPath.endsWith("photopea.ahk") {
+    Run("`"" A_LoopFileFullPath "`"")
     continue
+  }
   if A_LoopFileFullPath.RegExMatch("\.ahk( - Shortcut)?(\.lnk)?$") {
     total += 1
     if isActive(A_LoopFileFullPath)

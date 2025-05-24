@@ -30,7 +30,8 @@ SetTimer(RunTasks(*) {
 ^!F4::{
   if winactive("ahk_class Shell_TrayWnd") || winactive("ahk_class Progman")
     return
-  WinKill("A")
+  try
+    WinKill("A")
 }
 
 ; audacity dont save
@@ -141,7 +142,7 @@ tasks.push(() {
 ~!PrintScreen::{
   Sleep(300)
   loop files "D:\Downloads\images\screenshots\*.*", 'fr' {
-    if(A_LoopFilePath.includes("_")) {
+    if (A_LoopFilePath.includes("_")) {
       newname := A_LoopFilePath.replace("_", ' ')
       DirCreate(newname.RegExReplace("[\\/][^\\/]+$", ''))
       FileMove(A_LoopFileFullPath, newname, 1)
@@ -300,7 +301,7 @@ OnNewWindow((lParam) {
 
   ; auto aot for xdm download window
   try {
-    if(WinGetProcessPath(lParam) == "C:\Program Files (x86)\XDM\java-runtime\bin\javaw.exe") {
+    if (WinGetProcessPath(lParam) == "C:\Program Files (x86)\XDM\java-runtime\bin\javaw.exe") {
       WinSetAlwaysOnTop(1, lParam)
     }
   }
@@ -316,9 +317,9 @@ todark(win) {
   DarkColors := Map("Background", "0x202020", "Controls", "0x404040", "Font", "0xE0E0E0")
   TextBackgroundBrush := DllCall("gdi32\CreateSolidBrush", "UInt", DarkColors["Background"], "Ptr")
 
-  if(VerCompare(A_OSVersion, "10.0.17763") >= 0) {
+  if (VerCompare(A_OSVersion, "10.0.17763") >= 0) {
     DWMWA_USE_IMMERSIVE_DARK_MODE := 19
-    if(VerCompare(A_OSVersion, "10.0.18985") >= 0) {
+    if (VerCompare(A_OSVersion, "10.0.18985") >= 0) {
       DWMWA_USE_IMMERSIVE_DARK_MODE := 20
     }
     DllCall("dwmapi\DwmSetWindowAttribute", "Ptr", WinExist(win), "Int", DWMWA_USE_IMMERSIVE_DARK_MODE, "Int*", True, "Int", 4)
@@ -395,15 +396,15 @@ todark(win) {
 
 #HotIf
 
-; ; close KeePassOTP cant fetch error popup
-; tasks.push(() {
-;   if WinExist("KeePassOTP ahk_exe KeePass.exe") {
-;     WinClose("KeePassOTP ahk_exe KeePass.exe")
-;     ; WinActivate("KeePassOTP ahk_exe KeePass.exe")
-;     ; WinWaitActive("KeePassOTP ahk_exe KeePass.exe")
-;     ; send("{Enter}")
-;   }
-; })
+; close KeePassOTP cant fetch error popup
+tasks.push(() {
+  if WinExist("KeePassOTP ahk_exe KeePass.exe ahk_class #32770") {
+    WinClose("KeePassOTP ahk_exe KeePass.exe ahk_class #32770")
+    ; WinActivate("KeePassOTP ahk_exe KeePass.exe")
+    ; WinWaitActive("KeePassOTP ahk_exe KeePass.exe")
+    ; send("{Enter}")
+  }
+})
 tasks.push(() {
   if WinExist("ahk_class SunAwtDialog ahk_exe Minecraft.exe") {
     WinActivate("ahk_class SunAwtDialog ahk_exe Minecraft.exe")
@@ -446,8 +447,8 @@ tasks.Push(() {
       GetKeyState("rwin", "P") or
       GetKeyState("shift", "P") {
       }
-      doclick(btnx, btny)
-    } catch {
+      if tryfind(GODOT_okbtn, &btnx, &btny)
+        doclick(btnx, btny)
     }
   }
 })
@@ -504,7 +505,7 @@ HIDER_on := false
 
 tasks.Push(() {
   global HIDER_on
-  if(HIDER_on) {
+  if (HIDER_on) {
     HIDER_ui.Show("W" . A_ScreenWidth . " H" . A_ScreenHeight + 100)
     ; WinSetTransparent(200, HIDER_ui)
   } else {
@@ -529,7 +530,7 @@ F11::WinMove(1340, 774, 500, 300)
 #HotIf
 
 #down::{
-  WinMinimize("a")
+  try WinMinimize("a")
 }
 
 #!$LButton up::send("{LButton down}")
@@ -538,7 +539,7 @@ F11::WinMove(1340, 774, 500, 300)
 F1::f24
 #HotIf
 ; allow resize
-*#q::WinSetStyle('+0x40000', 'a')
+*#q::try WinSetStyle('+0x40000', 'a')
 ; ^+q:: WinSetStyle('-0x40000', 'a')
 ; ^+f:: WinMove(100, 100, 500, 500, "a")
 
@@ -564,8 +565,11 @@ DllCall("ShowCursor", "UInt", 1)
     WinSetAlwaysOnTop(1, win)
     ; MsgBox(JSON.stringify(WinGetList("ahk_exe ShaderGlass.exe")))
     SetTimer(() {
-      try
+      try {
         WinSetAlwaysOnTop(1, win)
+        WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
+        WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
+      }
       catch
         settimer(, 0)
     }, 50)
@@ -574,6 +578,18 @@ DllCall("ShowCursor", "UInt", 1)
     DetectHiddenWindows(1)
   }
 }
-tasks.Push((){
+tasks.Push(() {
   try WinClose("Authorization required ahk_exe javaw.exe ahk_class SunAwtDialog")
 })
+::beleive::believe
+::dont::don't
+
+ctrlXAfterZCooldown_NOW := 0
+$~^z::{
+  global ctrlXAfterZCooldown_NOW
+  ctrlXAfterZCooldown_NOW := A_TickCount
+}
+
+#HotIf A_TickCount - ctrlXAfterZCooldown_NOW < 700
+^x::{
+}
