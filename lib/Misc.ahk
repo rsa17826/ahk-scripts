@@ -2226,16 +2226,16 @@ class timer {
   }
 }
 
-getConsole(wd?, opts?) {
+getConsole(wd?, opts?, CMDPATH := "C:\Windows\system32\cmd.exe") {
   prevDetectHiddenWindows := A_DetectHiddenWindows
   DetectHiddenWindows(1)
-  list := WinGetList("C:\Windows\system32\cmd.exe").join(",")
-  Run("C:\Windows\system32\cmd.exe", wd?, opts?)
+  list := WinGetList(CMDPATH).join(",")
+  Run(CMDPATH, wd?, opts?)
   pid := WinExist("A")
-  while list = WinGetList("C:\Windows\system32\cmd.exe").join(",") {
+  while list = WinGetList(CMDPATH).join(",") {
   }
-  print(list, WinGetList("C:\Windows\system32\cmd.exe"))
-  win := WinGetList("C:\Windows\system32\cmd.exe")[WinGetList("C:\Windows\system32\cmd.exe").find(e => !list.includes(e))]
+  print(list, WinGetList(CMDPATH))
+  win := WinGetList(CMDPATH)[WinGetList(CMDPATH).find(e => !list.includes(e))]
   DetectHiddenWindows(prevDetectHiddenWindows)
   return win
 }
