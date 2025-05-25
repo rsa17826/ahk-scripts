@@ -19,3 +19,4 @@ rctest/temp/*
 **/plsts
 **/songplst*.json
 **/cookies*
+.vscode
