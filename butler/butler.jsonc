@@ -1,0 +1,59 @@
+{
+  "$schema": "./butler.schema.json",
+  "name": "rymu",
+  "exe": "../butler.exe",
+  "pauseCommandOnComplete": false,
+  "allAtOnce": false,
+  "cmdState": "min",
+  "games": [
+    {
+      "name": "vex-remake",
+      "builds": [
+        {
+          "path": "D:/godotgames/exports/vex/windows",
+          "channel": "windows"
+        },
+        {
+          "path": "D:/godotgames/vex",
+          "channel": "source",
+          "ignore": [".godot", ".godot/**"]
+        }
+      ]
+    },
+    {
+      "name": "platformer-battle",
+      "builds": [
+        {
+          "path": "D:/godotgames/platformer battle",
+          "channel": "source"
+        },
+        {
+          "path": "D:/godotgames/exports/platformer battle/windows/platformer battle.exe",
+          "channel": "windows"
+        }
+      ]
+    },
+    {
+      "name": "3d-platformer-test",
+      "builds": [
+        {
+          "path": "D:/godotgames/3d test",
+          "channel": "source"
+        }
+      ]
+    },
+    {
+      "name": "meeblings-test",
+      "builds": [
+        {
+          "path": "D:/godotgames/exports/meeblings test/windows/meeblings test.exe",
+          "channel": "windows"
+        },
+        {
+          "path": "D:/godotgames/meeblings test",
+          "channel": "source"
+        }
+      ]
+    }
+  ]
+}

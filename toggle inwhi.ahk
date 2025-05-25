@@ -1,1 +1,0 @@
-D:/programs/shaderglass/toggle inwhi.ahk

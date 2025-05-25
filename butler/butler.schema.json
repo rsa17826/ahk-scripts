@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cmdState": {
+      "type": "string"
+    },
+    "allAtOnce": {
+      "type": "boolean",
+      "default": false
+    },
+    "pauseCommandOnComplete": {
+      "type": "boolean",
+      "default": true
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exe": {
+      "type": "string",
+      "minLength": 1
+    },
+    "games": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "required": ["name", "builds"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "builds": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "required": ["path", "channel"],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ignore": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "channel": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["name", "exe", "games"]
+}

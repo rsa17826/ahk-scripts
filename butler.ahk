@@ -1,1 +1,0 @@
-D:/programs/butler/butler/butler.ahk
