@@ -2294,7 +2294,9 @@ changeCursorScheme(Scheme) {
     "SizeNESW",
     "SizeAll",
     "UpArrow",
-    "Hand"
+    "Hand",
+    "Pin",
+    "Person"
   ]
   KEYpath := "HKEY_CURRENT_USER\Control Panel\Cursors"
   SPI_SETCURSORS := 0x0057
@@ -2310,9 +2312,7 @@ changeCursorScheme(Scheme) {
   }
 
   for index, val in SchemeVals {
-    if (index < KeyNames.Length) {
-      RegWrite(val, "REG_EXPAND_SZ", KEYpath, KeyNames[index])
-    }
+    RegWrite(val, "REG_EXPAND_SZ", KEYpath, KeyNames[index])
   }
   DllCall("SystemParametersInfo", "UInt", SPI_SETCURSORS, "UInt", "0", "UInt", 0, "UInt", "0")
 }

@@ -9,52 +9,65 @@ DetectHiddenText(1)
 total := 0
 active := 0
 sympathCache := cache()
+oneshots := [
+  "photopea.ahk",
+  "random cursor scheme.ahk - Shortcut",
+]
 
+ignores := [
+  "close apps that just need bg processes.ahk"
+]
+runRequired := []
 loop files, "C:\Users\" A_UserName "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\*.*", "f" {
-  if A_LoopFileFullPath.endsWith("close apps that just need bg processes.ahk")
-    continue
-  if A_LoopFileFullPath.endsWith("photopea.ahk") {
-    Run("`"" A_LoopFileFullPath "`"")
-    continue
-  }
   if A_LoopFileFullPath.RegExMatch("\.ahk( - Shortcut)?(\.lnk)?$") {
+    b := 0
+    for a in ignores
+      if A_LoopFileFullPath.endsWith(a) or A_LoopFileFullPath.endsWith(a '.lnk') {
+        b := 1
+        break
+      }
+    for a in oneshots
+      if A_LoopFileFullPath.endsWith(a) or A_LoopFileFullPath.endsWith(a '.lnk') {
+        Run("`"" A_LoopFileFullPath "`"")
+        b := 1
+        break
+      }
+    if b
+      continue
     total += 1
     if isActive(A_LoopFileFullPath)
       active += 1
+    else {
+      runRequired.push(A_LoopFileFullPath)
+      ; MsgBox(A_LoopFileFullPath)
+    }
   }
 }
-ToolTip(round(active / total * 100) "% active`ntotal: " total ", active: " active)
+ToolTip(round((total - runRequired.Length) / total * 100) "% active`ntotal: " total ", active: " active)
 
-if total = active {
+if !runRequired.Length {
   Sleep(1000)
   ExitApp()
 }
-loop files, "C:\Users\" A_UserName "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\*.*", "f" {
-  if A_LoopFileFullPath.endsWith("close apps that just need bg processes.ahk")
-    continue
-  ahksList := WinGetlist("ahk_class AutoHotkey", , ,)
-  if A_LoopFileFullPath.RegExMatch("\.ahk( - Shortcut)?(\.lnk)?$") {
-    ; print(WinExist(A_LoopFileFullPath), getSymPath(A_LoopFileFullPath), WinExist(getSymPath(A_LoopFileFullPath)))
-
-    if !isActive(A_LoopFileFullPath) {
-      Run("`"" A_LoopFileFullPath "`"")
-      ; print(getSymPath(A_LoopFileFullPath), A_LoopFileFullPath)
-      ; print(ahksList.map((e) {
-      ;   return WinGetInfo(e)
-      ; }), ahksList.map((e) {
-      ;   return StatusBarGetText(e)
-      ; }).join("`n").includes(A_LoopFileFullPath), A_LoopFileFullPath)
-      if A_LoopFileFullPath.endsWith("photopea.ahk")
-        continue
+for filepath in runRequired {
+  ; ahksList := WinGetlist("ahk_class AutoHotkey", , ,)
+  if filepath.RegExMatch("\.ahk( - Shortcut)?(\.lnk)?$") {
+    if !isActive(filepath) {
+      Run("`"" filepath "`"")
+      for a in oneshots
+        if filepath.endsWith(a)
+          continue 2
 
       while 1 {
-        if isActive(A_LoopFileFullPath)
+        ToolTip("Waiting for " filepath)
+        if isActive(filepath)
           break
         sleep(10)
       }
     }
   }
 }
+Sleep(1000)
 reload()
 isActive(path) {
   lnkPath := path
