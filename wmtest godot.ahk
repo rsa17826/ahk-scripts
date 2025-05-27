@@ -69,20 +69,26 @@ while true {
 joy8::
 $F5::
 ^$F5::{
-  if WinActive("ahk_exe VSCodium.exe")
+  if WinActive("ahk_exe VSCodium.exe") {
     send("^s")
+    Sleep(100)
+  }
   ControlSend("{F5}", , godotpid)
   winwasactive := 0
 }
 $F6::{
-  if WinActive("ahk_exe VSCodium.exe")
+  if WinActive("ahk_exe VSCodium.exe") {
     send("^s")
+    Sleep(100)
+  }
   ControlSend("{F5}", , godotpid)
   winwasactive := 0
 }
 ^$F6::{
-  if WinActive("ahk_exe VSCodium.exe")
+  if WinActive("ahk_exe VSCodium.exe") {
     send("^s")
+    Sleep(100)
+  }
   ControlSend("{F6}", , godotpid)
   winwasactive := 0
 }

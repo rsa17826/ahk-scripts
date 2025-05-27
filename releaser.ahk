@@ -29,6 +29,8 @@ if A_Args.Length >= 1 and
 ; MsgBox(uploadPath)
 if !uploadPaths.Length
   ExitApp()
+if !confirm(uploadPaths.join("`n"))
+  ExitApp()
 
 DetectHiddenWindows(1)
 ; win := getConsole(A_WorkingDir, "hide")
@@ -50,7 +52,7 @@ while GetKeyState("shift", "p") || GetKeyState("ctrl", "p") || GetKeyState("alt"
 WinActivate(win)
 text := ''
 for p in uploadPaths {
-  text .= '`nCompress-Archive -Path "__PATH__\*" -DestinationPath "__PATH__.zip"'.replace("__PATH__", p)
+  text .= '`nCompress-Archive -Path "__PATH__\*" -DestinationPath "__PATH__.zip" -Force'.replace("__PATH__", p)
 }
 text .= '`ngh release create "__VERSION__" "__PATHS__" --notes ""'.replace("__VERSION__", version).replace("__PATHS__", uploadPaths.map(e => e '.zip').join('" "'))
 for p in uploadPaths {
