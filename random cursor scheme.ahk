@@ -21,4 +21,4 @@ remove := [
   'rec11',
   'main'
 ]
-changeCursorScheme(listCursorSchemes().filter(e => !remove.includes(e)).random())
+setCursors(listCursors().filter(e => !remove.includes(e)).random())

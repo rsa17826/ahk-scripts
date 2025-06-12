@@ -20,3 +20,5 @@ rctest/temp/*
 **/songplst*.json
 **/cookies*
 .vscode
+window spy/a
+logs

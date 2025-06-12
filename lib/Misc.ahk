@@ -2125,11 +2125,11 @@ AnyFile(files*) {
   }
 }
 
-createFileAssoc(fileExt, programPath, typeName := fileExt " file") {
-  RegWrite(typeName, "REG_EXPAND_SZ", "HKEY_CLASSES_ROOT\" fileExt "file", "")
-  RegWrite("`"" programPath "`"" "`"%1`"", "REG_EXPAND_SZ", "HKEY_CLASSES_ROOT\" fileExt "file\shell\open\command", "")
-  RegWrite(fileExt "file", "REG_EXPAND_SZ", "HKEY_CLASSES_ROOT\." fileExt, "")
-}
+; createFileAssoc(fileExt, programPath, typeName := fileExt " file") {
+;   RegWrite(typeName, "REG_EXPAND_SZ", "HKEY_CLASSES_ROOT\" fileExt "file", "")
+;   RegWrite("`"" programPath "`"" "`"%1`"", "REG_EXPAND_SZ", "HKEY_CLASSES_ROOT\" fileExt "file\shell\open\command", "")
+;   RegWrite(fileExt "file", "REG_EXPAND_SZ", "HKEY_CLASSES_ROOT\." fileExt, "")
+; }
 
 /**
  * makes all object properties optional and returns a default instead of throwing an error if key doesnt exist
@@ -2271,14 +2271,14 @@ class MakeLink {
 confirm(text, title?) {
   return MsgBox(text, title?, 0x4) = "yes"
 }
-listCursorSchemes() {
+listCursors() {
   arr := []
   loop reg, "HKEY_CURRENT_USER\Control Panel\Cursors\Schemes" {
     arr.push(A_LoopRegName)
   }
   return arr
 }
-changeCursorScheme(Scheme) {
+setCursors(Scheme) {
   KeyNames := [
     "Arrow",
     "Help",
@@ -2316,3 +2316,10 @@ changeCursorScheme(Scheme) {
   }
   DllCall("SystemParametersInfo", "UInt", SPI_SETCURSORS, "UInt", "0", "UInt", 0, "UInt", "0")
 }
+
+; Function to unzip a file
+unzip(zipFile, outputDir) {
+  DirCreate(outputDir)
+  RunWait(A_ComSpec ' /c "powershell -command Expand-Archive -Path ' zipFile ' -DestinationPath ' outputDir ' -Force"', , "hide")
+}
+; DllCall("GetCommandLine", "str")

@@ -36,14 +36,17 @@ DetectHiddenWindows(1)
 ; win := getConsole(A_WorkingDir, "hide")
 RunWait("cmd /c gh release list --json tagName > test.txt")
 versions := JSON.parse(f.read("test.txt"), 0, 0)
-; FileDelete("test.txt")
+FileDelete("test.txt")
 uploadPaths := uploadPaths.map(e => e.trim('"'))
 version := 1
 for v in versions {
-  if v.tagName >= version {
+  ; if v.tagName.RegExMatch("^-?(?:\d+(?:\.\d+)?|\.\d+)$") && v.tagName >= version {
+  try if v.tagName >= version {
     version := v.tagName + 1
   }
 }
+if FileExist("VERSION")
+  f.write("VERSION", version)
 win := getConsole(A_WorkingDir, "", "C:\Program Files\PowerShell\7\pwsh.exe")
 ; sshpass := EnvGet("SSHPASS")
 while GetKeyState("shift", "p") || GetKeyState("ctrl", "p") || GetKeyState("alt", "p") || GetKeyState("enter", "p") {
@@ -67,3 +70,4 @@ Sleep(1000)
 ; WinClose(win)
 ; MsgBox("done")
 ; D:\godotgames\exports
+; gh release create "OLD-1" "C:\Users\User\Downloads\archives\windows (5).zip" --latest=false --notes "older version"

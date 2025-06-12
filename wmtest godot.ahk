@@ -17,6 +17,8 @@ while true {
     if WinExist(" - Godot Engine ahk_class Engine") {
       if !godotpid {
         godotpid := WinExist(" - Godot Engine ahk_class Engine")
+        WinMinimize(godotpid)
+        WinRestore(godotpid)
       }
     } else {
       godotpid := 0
@@ -40,7 +42,8 @@ while true {
       WinMove(0, kombarh, (size / 100 * A_ScreenWidth), ((A_ScreenHeight - 50) - kombarh), "ahk_exe VSCodium.exe")
     }
   } catch Error as e {
-    ; MsgBox(e.Message)
+    tooltip(e.Message)
+    Sleep(40000)
     Reload()
   }
   try {
@@ -55,40 +58,41 @@ while true {
     }
     if ((WinActive("a") && WinExist("(DEBUG) ahk_class Engine") && !WinActive("(DEBUG) ahk_class Engine") && winwasactive == WinExist("(DEBUG) ahk_class Engine") && WinGetTitle(WinActive("a"))) && WinActive("ahk_exe VSCodium.exe")) {
       for win in WinGetList("(DEBUG) ahk_class Engine")
-        try WinKill(win)
+        try WinMinimize(win)
     }
     sleep(10)
   } catch {
     Reload()
   }
+  sleep(1000)
 }
 ; joy8::{
 ;   Print(godotpid , WinExist(godotpid) , WinGetMinMax(godotpid) != -1 , WinGetMinMax("ahk_exe VSCodium.exe") == 0)
 ; }
-#HotIf godotpid and WinExist(godotpid) and WinGetMinMax(godotpid) != -1 and (WinActive("ahk_class Engine") || WinActive("ahk_exe VSCodium.exe")) ;and WinGetMinMax("ahk_exe VSCodium.exe") == 0
+#HotIf godotpid and WinExist(godotpid) and WinGetMinMax(godotpid) != -1 and (WinActive("ahk_class Engine") || WinActive("ahk_exe VSCodium.exe")) and WinGetMinMax("ahk_exe VSCodium.exe") == 0
 joy8::
 $F5::
 ^$F5::{
-  if WinActive("ahk_exe VSCodium.exe") {
-    send("^s")
-    Sleep(100)
-  }
+  ; if WinActive("ahk_exe VSCodium.exe") {
+  ;   send("^s")
+  ;   Sleep(100)
+  ; }
   ControlSend("{F5}", , godotpid)
   winwasactive := 0
 }
 $F6::{
-  if WinActive("ahk_exe VSCodium.exe") {
-    send("^s")
-    Sleep(100)
-  }
+  ; if WinActive("ahk_exe VSCodium.exe") {
+  ;   send("^s")
+  ;   Sleep(100)
+  ; }
   ControlSend("{F5}", , godotpid)
   winwasactive := 0
 }
 ^$F6::{
-  if WinActive("ahk_exe VSCodium.exe") {
-    send("^s")
-    Sleep(100)
-  }
+  ; if WinActive("ahk_exe VSCodium.exe") {
+  ;   send("^s")
+  ;   Sleep(100)
+  ; }
   ControlSend("{F6}", , godotpid)
   winwasactive := 0
 }

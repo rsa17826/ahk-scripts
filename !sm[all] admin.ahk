@@ -283,6 +283,7 @@ a::{
 ; auto set darkmode on titlebar
 OnNewWindow((lParam) {
   try {
+    ; try IniWrite(WinGetTitle(lParam), "c:\users\user\openedwindows.ini", "opened windows: " A_Now)
     text := (
       ; "process name: " WinGetProcessName("ahk_id " lParam)
       ; "`nprocess path: " WinGetProcessPath("ahk_id " lParam)
@@ -495,6 +496,7 @@ SetKeyDelay(0, 0)
 #InputLevel 100
 $*Volume_Down::SoundSetVolume(SoundGetVolume() - 1)
 $*Volume_Up::SoundSetVolume(SoundGetVolume() + 1)
+#InputLevel
 
 ; hider
 HIDER_ui := Gui()
@@ -546,37 +548,71 @@ F1::f24
 if WinExist("ahk_exe ShaderGlass.exe ahk_class SHADERGLASS")
   ProcessClose("ShaderGlass.exe")
 DllCall("ShowCursor", "UInt", 1)
-
+^esc::argReload()
 ^+!/::{
-  DetectHiddenWindows(0)
   win := "ahk_exe ShaderGlass.exe ahk_class SHADERGLASS"
+  DllCall("ShowCursor", "UInt", 1)
 
+  DetectHiddenWindows(0)
   if WinExist(win)
-    ProcessClose("ShaderGlass.exe")
+    WinHide(win)
   else {
-    a := WinExist("a")
-    Run("`"D:\programs\shaderglass\ShaderGlass.exe`" inwhi.sgp", "D:\programs\shaderglass", "NoActivate")
-    WinWait(win)
-    WinMove(0, 0, A_ScreenWidth, A_ScreenHeight, win)
-    ControlSend("{shift up}{ctrl up}{alt up}{/ up}m", , win)
-    ControlSend("{win down}", , win)
-    WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
-    WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
-    WinSetAlwaysOnTop(1, win)
-    ; MsgBox(JSON.stringify(WinGetList("ahk_exe ShaderGlass.exe")))
-    SetTimer(() {
-      try {
-        WinSetAlwaysOnTop(1, win)
-        WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
-        WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
-      }
-      catch
-        settimer(, 0)
-    }, 50)
-    if WinExist(a)
-      WinActivate(a)
     DetectHiddenWindows(1)
+    if WinExist(win) {
+      WinShow(win)
+    } else {
+      a := WinExist("a")
+      Run("`"D:\programs\shaderglass\ShaderGlass.exe`" inwhi.sgp", "D:\programs\shaderglass", "NoActivate")
+      WinWait(win)
+      WinMove(0, 0, A_ScreenWidth, A_ScreenHeight, win)
+      ControlSend("{shift up}{ctrl up}{alt up}{/ up}m", , win)
+      ControlSend("{win down}", , win)
+      WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
+      WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
+      WinSetAlwaysOnTop(1, win)
+      ; MsgBox(JSON.stringify(WinGetList("ahk_exe ShaderGlass.exe")))
+      SetTimer(() {
+        try {
+          WinSetAlwaysOnTop(1, win)
+          WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
+          WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
+        }
+        catch
+          settimer(, 0)
+      }, 50)
+      if WinExist(a)
+        WinActivate(a)
+      DetectHiddenWindows(1)
+    }
   }
+  DetectHiddenWindows(1)
+
+  ; if WinExist(win)
+  ;   ProcessClose("ShaderGlass.exe")
+  ; else {
+  ;   a := WinExist("a")
+  ;   Run("`"D:\programs\shaderglass\ShaderGlass.exe`" inwhi.sgp", "D:\programs\shaderglass", "NoActivate")
+  ;   WinWait(win)
+  ;   WinMove(0, 0, A_ScreenWidth, A_ScreenHeight, win)
+  ;   ControlSend("{shift up}{ctrl up}{alt up}{/ up}m", , win)
+  ;   ControlSend("{win down}", , win)
+  ;   WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
+  ;   WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
+  ;   WinSetAlwaysOnTop(1, win)
+  ;   ; MsgBox(JSON.stringify(WinGetList("ahk_exe ShaderGlass.exe")))
+  ;   SetTimer(() {
+  ;     try {
+  ;       WinSetAlwaysOnTop(1, win)
+  ;       WinSetStyle("-0xC40000 +E0x20", win) ; -0xC40000 - no title bar
+  ;       WinSetExStyle("+0x80", win) ; +0x80 not in taskbar
+  ;     }
+  ;     catch
+  ;       settimer(, 0)
+  ;   }, 50)
+  ;   if WinExist(a)
+  ;     WinActivate(a)
+  ;   DetectHiddenWindows(1)
+  ; }
 }
 tasks.Push(() {
   try WinClose("Authorization required ahk_exe javaw.exe ahk_class SunAwtDialog")
@@ -593,3 +629,30 @@ $~^z::{
 #HotIf A_TickCount - ctrlXAfterZCooldown_NOW < 700
 ^x::{
 }
+
+; godot auto export
+tasks.Push(() {
+  win := WinExist("Export ahk_class Engine")
+  if !win
+    return
+  WinActivate(win)
+  MouseMove(148, 554, 0)
+  Click()
+  if not WinExist("Export ahk_class Engine")
+    return
+  win := WinWait("Export All ahk_class Engine")
+  WinActivate(win)
+  MouseMove(171, 70, 0)
+  Click()
+  if not WinExist("Export ahk_class Engine")
+    return
+  WinWaitClose("Export All ahk_class Engine")
+  while win := WinExist("Export ahk_class Engine") {
+    WinActivate(win)
+    if WinExist("Export ahk_class Engine")
+      MouseMove(759, 552, 0)
+    if WinExist("Export ahk_class Engine")
+      Click()
+    Sleep(100)
+  }
+})

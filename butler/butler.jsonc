@@ -7,11 +7,15 @@
   "cmdState": "min",
   "games": [
     {
-      "name": "vex-remake",
+      "name": "vex-plus-plus",
       "builds": [
         {
           "path": "D:/godotgames/exports/vex/windows",
           "channel": "windows"
+        },
+        {
+          "path": "D:/godotgames/vex/launcher",
+          "channel": "launcher"
         },
         {
           "path": "D:/godotgames/vex",

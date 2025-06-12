@@ -1,5 +1,4 @@
 #Requires AutoHotkey v2.0
-#Include <Misc>
 #SingleInstance Force
 
 guishow := gui.Prototype.show
