@@ -30,8 +30,10 @@ SetWorkingDir(A_ScriptDir)
 
 
 )"
-if f.read(filename) != text
-  FileRecycle(filename)
+if !A_Args.join(" ").includes("nodelete") {
+  if f.read(filename) != text
+    FileRecycle(filename)
+  f.write(filename, text)
 
-f.write(filename, text)
+}
 run("`"VSCodium.exe`" `"" dir "`" --goto `"" filename "`":" text.split("`n").length ":1")

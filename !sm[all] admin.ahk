@@ -636,7 +636,7 @@ tasks.Push(() {
   if !win
     return
   WinActivate(win)
-  MouseMove(148, 554, 0)
+  MouseMove(148, 574, 0)
   Click()
   if not WinExist("Export ahk_class Engine")
     return
@@ -650,9 +650,22 @@ tasks.Push(() {
   while win := WinExist("Export ahk_class Engine") {
     WinActivate(win)
     if WinExist("Export ahk_class Engine")
-      MouseMove(759, 552, 0)
+      MouseMove(759, 572, 0)
     if WinExist("Export ahk_class Engine")
       Click()
     Sleep(100)
   }
 })
+
+#HotIf
+; MsgBox(1)
+
+; $^#Numpad1 up::
+; $^#Numpad2 up::
+; $^#Numpad3 up::
+; $^#Numpad4 up::
+; $^#Numpad5 up::
+; $^#Numpad6 up::
+; $^#Numpad7 up::
+; $^#Numpad8 up::
+; $^#Numpad9 up::

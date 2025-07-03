@@ -43,7 +43,7 @@ while true {
     }
   } catch Error as e {
     tooltip(e.Message)
-    Sleep(40000)
+    Sleep(4000)
     Reload()
   }
   try {

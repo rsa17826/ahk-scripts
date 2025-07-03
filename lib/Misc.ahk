@@ -1084,6 +1084,9 @@ class path {
 }
 
 input(text?, ifUnset?, title?, options?, default?) {
+  SetTimer(() {
+    WinSetAlwaysOnTop(1, 'a')
+  }, -50)
   temp := InputBox(text?, title?, options?, default?)
   if temp.Result = "OK"
     return temp.Value
@@ -2269,7 +2272,7 @@ class MakeLink {
 }
 
 confirm(text, title?) {
-  return MsgBox(text, title?, 0x4) = "yes"
+  return MsgBox(text, title?, 0x4 | 0x1000) = "yes"
 }
 listCursors() {
   arr := []
@@ -2323,3 +2326,62 @@ unzip(zipFile, outputDir) {
   RunWait(A_ComSpec ' /c "powershell -command Expand-Archive -Path ' zipFile ' -DestinationPath ' outputDir ' -Force"', , "hide")
 }
 ; DllCall("GetCommandLine", "str")
+
+/*
+by Bruttosozialprodukt
+https://autohotkey.com/board/topic/101007-super-simple-download-with-progress-bar/
+*/
+
+DownloadFile(UrlToFile, SaveFileAs, Overwrite := True, UseProgressBar := True) {
+  ;Check if the file already exists and if we must not overwrite it
+  ;The label that updates the progressbar
+  LastSize := 0
+  LastSizeTick := 0
+  ; ProgressGuiText2 := ''
+  ; ProgressGuiText := ''
+  __UpdateProgressBar := () { ; V1toV2: Added bracket
+    ;Get the current filesize and tick
+    CurrentSize := FileGetSize(SaveFileAs) ;FileGetSize wouldn't return reliable results
+    CurrentSizeTick := A_TickCount
+    ;Calculate the downloadspeed
+    Speed := Round((CurrentSize / 1024 - LastSize / 1024) / ((CurrentSizeTick - LastSizeTick) / 1000)) . " Kb/s"
+    ;Save the current filesize and tick for the next time
+    LastSizeTick := CurrentSizeTick
+    LastSize := FileGetSize(SaveFileAs)
+    ;Calculate percent done
+    PercentDone := Floor(CurrentSize / FinalSize * 100)
+    ;Update the ProgressBar
+    ; ProgressGui.Title := "Downloading " SaveFileAs " 〰" PercentDone "`%ㄱ"
+    ProgressGuiText.text := "Downloading...  (" Speed ")"
+    gocProgress.Value := PercentDone
+    ProgressGuiText2.text := PercentDone "`% Done"
+    ProgressGui.Show("AutoSize NoActivate")
+    return
+  } ; V1toV2: Added bracket in the end
+  if (!Overwrite && FileExist(SaveFileAs))
+    return
+  ;Check if the user wants a progressbar
+  if (UseProgressBar) {
+    ;Initialize the WinHttpRequest Object
+    WebRequest := ComObject("WinHttp.WinHttpRequest.5.1")
+    ;Download the headers
+    WebRequest.Open("HEAD", UrlToFile)
+    WebRequest.Send()
+    ;Store the header which holds the file size in a variable:
+    FinalSize := WebRequest.GetResponseHeader("Content-Length")
+    ;Create the progressbar and the timer
+    ProgressGui := Gui("ToolWindow -Sysmenu Disabled AlwaysOnTop +E0x20 -Border -Caption"), ProgressGui.Title := UrlToFile, ProgressGui.SetFont("Bold"), ProgressGuiText := ProgressGui.AddText("x0 w200 Center", "Downloading...")
+    ProgressGuiText2 := ProgressGui.AddText("x0 w200 Center", 0 "`% Done")
+    gocProgress := ProgressGui.AddProgress("x10 w180 h20")
+    ProgressGui.Show("AutoSize NoActivate")
+    SetTimer(__UpdateProgressBar, 100)
+  }
+  ;Download the file
+  Download(UrlToFile, SaveFileAs)
+  ;Remove the timer and the progressbar because the download has finished
+  if (UseProgressBar) {
+    ProgressGui.Destroy
+    SetTimer(__UpdateProgressBar, 0)
+  }
+  return
+}

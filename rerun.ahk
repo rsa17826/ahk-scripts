@@ -12,10 +12,11 @@ sympathCache := cache()
 oneshots := [
   "photopea.ahk",
   "random cursor scheme.ahk - Shortcut",
+  "disable screenreader warning.ahk"
 ]
 
 ignores := [
-  "close apps that just need bg processes.ahk"
+  "close apps that just need bg processes.ahk",
 ]
 runRequired := []
 loop files, "C:\Users\" A_UserName "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\*.*", "f" {

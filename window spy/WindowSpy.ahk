@@ -208,7 +208,7 @@ Right_Click_Event(wParam, lParam, msg, hwnd) {
     ControlSend("^{Ins}", hwnd)
 
   if ClipWait(1) {
-    ToolTip("Copied: " A_Clipboard)
+    ToolTip("Copied: " A_Clipboard[1, 150])
     SetTimer(ToolTip, -1000)
   }
   return 0

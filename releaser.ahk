@@ -53,7 +53,7 @@ while GetKeyState("shift", "p") || GetKeyState("ctrl", "p") || GetKeyState("alt"
 }
 ; cd "__PATH__"
 WinActivate(win)
-text := ''
+text := 'echo Version: ' version
 for p in uploadPaths {
   text .= '`nCompress-Archive -Path "__PATH__\*" -DestinationPath "__PATH__.zip" -Force'.replace("__PATH__", p)
 }
