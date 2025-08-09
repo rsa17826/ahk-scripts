@@ -2161,19 +2161,22 @@ class OptObj extends Object {
   }
 }
 
-DllCall("RegisterShellHookWindow", "UInt", A_ScriptHWND)
-
-OnMessage(DllCall("RegisterWindowMessage", "Str", "SHELLHOOK"), (wParam, lParam, *) {
-  if (wParam = 1) {
-    for cb in OnNewWindow.cbs {
-      cb(lParam)
-    }
-  }
-})
-
 class OnNewWindow {
+  static started := 0
   static cbs := []
   __New(func) {
+    if not OnNewWindow.started {
+      DllCall("RegisterShellHookWindow", "UInt", A_ScriptHWND)
+
+      OnMessage(DllCall("RegisterWindowMessage", "Str", "SHELLHOOK"), (wParam, lParam, *) {
+        if (wParam = 1) {
+          for cb in OnNewWindow.cbs {
+            cb(lParam)
+          }
+        }
+      })
+      OnNewWindow.started := 1
+    }
     OnNewWindow.cbs.push(func)
   }
 }
@@ -2341,21 +2344,31 @@ DownloadFile(UrlToFile, SaveFileAs, Overwrite := True, UseProgressBar := True) {
   ; ProgressGuiText := ''
   __UpdateProgressBar := () { ; V1toV2: Added bracket
     ;Get the current filesize and tick
-    CurrentSize := FileGetSize(SaveFileAs) ;FileGetSize wouldn't return reliable results
-    CurrentSizeTick := A_TickCount
-    ;Calculate the downloadspeed
-    Speed := Round((CurrentSize / 1024 - LastSize / 1024) / ((CurrentSizeTick - LastSizeTick) / 1000)) . " Kb/s"
-    ;Save the current filesize and tick for the next time
-    LastSizeTick := CurrentSizeTick
-    LastSize := FileGetSize(SaveFileAs)
-    ;Calculate percent done
-    PercentDone := Floor(CurrentSize / FinalSize * 100)
-    ;Update the ProgressBar
-    ; ProgressGui.Title := "Downloading " SaveFileAs " 〰" PercentDone "`%ㄱ"
-    ProgressGuiText.text := "Downloading...  (" Speed ")"
-    gocProgress.Value := PercentDone
-    ProgressGuiText2.text := PercentDone "`% Done"
-    ProgressGui.Show("AutoSize NoActivate")
+    try {
+
+      CurrentSize := FileGetSize(SaveFileAs) ;FileGetSize wouldn't return reliable results
+      CurrentSizeTick := A_TickCount
+      ;Calculate the downloadspeed
+      Speed := Round((CurrentSize / 1024 - LastSize / 1024) / ((CurrentSizeTick - LastSizeTick) / 1000)) . " Kb/s"
+      ;Save the current filesize and tick for the next time
+      LastSizeTick := CurrentSizeTick
+      LastSize := FileGetSize(SaveFileAs)
+      ;Calculate percent done
+      PercentDone := Floor(CurrentSize / FinalSize * 100)
+      ;Update the ProgressBar
+      ; ProgressGui.Title := "Downloading " SaveFileAs " 〰" PercentDone "`%ㄱ"
+      ProgressGuiText.text := "Downloading...  (" Speed ")"
+      gocProgress.Value := PercentDone
+      ProgressGuiText2.text := PercentDone "`% Done"
+      ProgressGui.Show("AutoSize NoActivate")
+    } catch Error as e {
+      print("Error while updating progress bar. ", e, "PercentDone", PercentDone)
+      ; if PercentDone >= 100 {
+      ;   try {
+      ;     SetTimer(__UpdateProgressBar, 0)
+      ;   }
+      ; }
+    }
     return
   } ; V1toV2: Added bracket in the end
   if (!Overwrite && FileExist(SaveFileAs))
@@ -2380,8 +2393,20 @@ DownloadFile(UrlToFile, SaveFileAs, Overwrite := True, UseProgressBar := True) {
   Download(UrlToFile, SaveFileAs)
   ;Remove the timer and the progressbar because the download has finished
   if (UseProgressBar) {
-    ProgressGui.Destroy
+    ProgressGui.Destroy()
     SetTimer(__UpdateProgressBar, 0)
   }
   return
+}
+
+GuiSetPlaceholder(guiCtrlOrHwnd, Cue) {
+  if !(guiCtrlOrHwnd is Integer) {
+    guiCtrlOrHwnd := guiCtrlOrHwnd.hwnd
+  }
+  static EM_SETCUEBANNER := (0x1500 + 1)
+  return DllCall("User32.dll\SendMessageW", "Ptr", guiCtrlOrHwnd, "Uint", EM_SETCUEBANNER, "Ptr", True, "WStr", Cue)
+}
+
+aotMsgBox(Text := '', Title := A_ScriptName, Options := 0) {
+  MsgBox(Text, Title, Options | 0x1000)
 }

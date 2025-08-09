@@ -21,4 +21,6 @@ rctest/temp/*
 **/cookies*
 .vscode
 window spy/a
+saved captures
 logs
+temp

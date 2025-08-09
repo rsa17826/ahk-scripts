@@ -45,7 +45,12 @@ tasks.push(() {
   ControlClick('Button2', "Save changes to")
   sleep(10)
 })
-#hotif
+
+; close pixiEditor window
+tasks.push(() {
+  if WinExist("Hello there!")
+    WinClose("Hello there!")
+})
 
 ; auto close Logged In Elsewhere
 DetectHiddenWindows(true)
@@ -658,6 +663,22 @@ tasks.Push(() {
 })
 
 #HotIf
+
+; _1p := 0
+; ; SetTimer(() {
+; ;   global _1p
+; ;   _1p := GetKeyState("1", "p")
+; ; }, 9000)
+
+; #hotif _1p
+; *$~Ctrl::
+; *$~Shift::
+; *$~LWin::
+; *$~Alt::{
+;   if _1p
+;     SendDll("{1 up}")
+; }
+
 ; MsgBox(1)
 
 ; $^#Numpad1 up::

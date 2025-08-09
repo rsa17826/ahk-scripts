@@ -14,7 +14,7 @@ oneshots := [
   "random cursor scheme.ahk - Shortcut",
   "disable screenreader warning.ahk"
 ]
-
+; run("C:\Users\User\Desktop\glazewm\target\release\glazewm.exe")
 ignores := [
   "close apps that just need bg processes.ahk",
 ]

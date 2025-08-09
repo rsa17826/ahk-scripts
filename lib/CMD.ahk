@@ -4,7 +4,6 @@
 ; must include
 SetWorkingDir(A_ScriptDir)
 #Include <vars>
-
 DetectHiddenWindows(True)
 Run(A_ComSpec, , "Hide", &cmdpid)
 WinWait("ahk_pid " cmdpid)
@@ -67,7 +66,7 @@ class cmd {
     this.RunningCommand := this.shell.Exec(A_ComSpec " /C " commandString)
     return this.result
   }
-  
+
   RunningCommand := unset
 
   /**

@@ -21,6 +21,9 @@
 ; https://www.twitch.tv/videos/2397354646?filter=archives&sort=time
 ; https://www.twitch.tv/videos/2395728869?filter=archives&sort=time
 ; https://www.twitch.tv/videos/2394826562?filter=archives&sort=time
+
+; https://www.twitch.tv/videos/2489772230?filter=archives&sort=time
+; https://www.twitch.tv/videos/2497768418?filter=archives&sort=time
 ; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2411513087?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
 ; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2407666331?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
 ; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2405817724?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
@@ -34,7 +37,7 @@
 SetWorkingDir(A_ScriptDir)
 
 #SingleInstance Off
-urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+").map((e) => e[0])
+urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+").map((e) => e[0].RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", ''))
 if !urls.length
   return
 progress := 0
