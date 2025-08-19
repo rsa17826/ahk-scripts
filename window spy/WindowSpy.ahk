@@ -42,7 +42,7 @@ getCmdArgs() {
     return
   try {
     gettingArgs := 1
-    RunWait('*RunAs "cmd" /c "WMIC path win32_process get Commandline,Processid>"' A_ScriptDir '/a"', A_ScriptDir, "hide")
+    RunWait('*RunAs "cmd" /c WMIC path win32_process get Commandline,Processid>"' A_ScriptDir '/a"', A_ScriptDir, "hide")
     text := FileRead("a", "UTF-8")
     pidIdx := text.IndexOf("ProcessId")
     argsIdx := text.IndexOf("CommandLine")
