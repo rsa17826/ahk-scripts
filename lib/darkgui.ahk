@@ -1,5 +1,4 @@
 #Requires AutoHotkey v2.0
-#SingleInstance Force
 
 guishow := gui.Prototype.show
 gui.Prototype := darkgui.Prototype
