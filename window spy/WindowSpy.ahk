@@ -1,5 +1,5 @@
 /************************************************************************
- * @description Window Spy for AHKv2 in dark mode, now incluing the window process path and args the window was opened with, and quick select when clicking inputs 
+ * @description Window Spy for AHKv2 in dark mode, now including the window process path and args the window was opened with, and quick select when clicking inputs 
  * @file WindowSpy.ahk
  * @author rssa_romeo
  * @version 1
@@ -42,7 +42,7 @@ getCmdArgs() {
     return
   try {
     gettingArgs := 1
-    RunWait('*runas "cmd.exe" /c WMIC path win32_process get Commandline,Processid>"' A_ScriptDir '/a"', A_ScriptDir, "hide")
+    RunWait('*RunAs "cmd" /c "WMIC path win32_process get Commandline,Processid>"' A_ScriptDir '/a"', A_ScriptDir, "hide")
     text := FileRead("a", "UTF-8")
     pidIdx := text.IndexOf("ProcessId")
     argsIdx := text.IndexOf("CommandLine")
@@ -112,7 +112,7 @@ WinSpyGui(fontSize := 11, font := "Segoe UI", Wrap := true) {
   oGui.Add("Edit", "w320 r4 ReadOnly vCtrl_Ctrl")
   .OnEvent("Focus", select)
 
-  oGui.Add("Text", , "Active Window Postition:")
+  oGui.Add("Text", , "Active Window Position:")
   oGui.Add("Edit", "w320 r2 ReadOnly vCtrl_Pos")
   .OnEvent("Focus", select)
 
