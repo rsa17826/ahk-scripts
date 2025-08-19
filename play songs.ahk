@@ -31,8 +31,9 @@ Hotkey("rbutton", (*) {
   SetTitleMatchMode("regex")
   while vlc := WinExist("^VLC media player$") {
     if s.expired() {
-      SetTitleMatchMode(1)
-      WinClose("C:\Users\User\Desktop\songs")
+      SetTitleMatchMode(3)
+      WinClose("songs")
+      ; WinClose("C:\Users\User\Desktop\songs")
       Reload()
     }
   }
@@ -47,16 +48,18 @@ Hotkey("rbutton", (*) {
       break
     }
     if s.expired() {
-      SetTitleMatchMode(1)
-      WinClose("C:\Users\User\Desktop\songs")
+      SetTitleMatchMode(3)
+      WinClose("songs")
+      ; WinClose("C:\Users\User\Desktop\songs")
       Reload()
     }
   }
   ; MsgBox(lasttit)
   ; MsgBox(a)
   send("^!{Left}")
-  SetTitleMatchMode(1)
+  SetTitleMatchMode(3)
   WinMinimize("ahk_exe vlc.exe")
-  WinClose("C:\Users\User\Desktop\songs")
+  WinClose("songs")
+  ; WinClose("C:\Users\User\Desktop\songs")
   ExitApp()
 })

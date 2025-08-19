@@ -1,8 +1,13 @@
+#Requires AutoHotkey v2.0
 #SingleInstance Force
-#Requires Autohotkey v2.0
-#Include <Misc>
-DirCreate("temp")
+
+try TraySetIcon("icon.ico")
 SetWorkingDir(A_ScriptDir)
+#Include *i <vars>
+
+#Include <Misc>
+
+DirCreate("temp")
 
 IncludeWindowInFileName := false
 folder := 'saved captures'
@@ -10,11 +15,10 @@ maxVids := 60
 windows := [
   'ahk_exe explorer.exe'
 ]
+clearTemp()
 
-try DirDelete("temp", 1)
-DirCreate("temp")
 DirCreate(folder)
-EnvSet('path', EnvGet('path') ';' A_ScriptDir)
+EnvSet('path', A_ScriptDir ';' EnvGet('path'))
 ; envset("path", 'C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\User\Desktop\ALL ahk scripts\rctest v2')
 DetectHiddenWindows(1)
 stopCapture()
@@ -28,13 +32,13 @@ stopCapture() {
 }
 startCapture() {
   stopCapture()
+  clearTemp()
   run('powershell -File capture.ps1', , 'hide')
 }
 gettitle() {
   global IncludeWindowInFileName
   if !IncludeWindowInFileName
     return FormatTime(A_Now, "HH mm MM dd yyyy")
-
   exe := StrReplace(WinGetProcessName("a"), ".exe", "")
   title := WinGetTitle("a")
   if instr(title, exe)
@@ -59,11 +63,11 @@ savevideo() {
   i := mod(lastFile + 1, maxVids)
   text := ''
   for ii in Range(0, maxVids) {
-    print(ii, i, pad(mod(i + ii, maxVids + 1), 3))
+    ; print(ii, i, pad(mod(i + ii, maxVids + 1), 3))
     if FileExist("temp/temp" pad(mod(i + ii, maxVids + 1), 3) ".mkv")
       text .= "file 'temp" pad(mod(i + ii, maxVids + 1), 3) ".mkv`n"
   }
-  print(lastFile, lastTime, i, text)
+  ; print(lastFile, lastTime, i, text)
   ; arr := arr.sort((a, s) {
   ;   return FileGetTime('temp/' s) > FileGetTime('temp/' a)
   ; })
@@ -129,43 +133,43 @@ OnExit((*) {
   stopCapture()
 })
 SetTimer(() {
-  static running := 0
-  if running {
-    return
-  }
-  running := 1
-  ; static dead := 0
-  a := WinExist('a')
-  active := 0
-  for win in windows {
-    if WinGetList(win).includes(a) {
-      active := 1
-      break
-    }
-  }
-  if active and not (WinGetList("RCTest - Capture").Length == 1) {
-    startCapture()
-    Sleep(1000)
-  } else {
-    if not active {
-      stopCapture()
-    }
-  }
-  running := 0
-  ; ToolTip(active)
-
-  ; if WinGetList("RCTest - Capture").Length == 1 {
-  ;   dead := 0
-  ; } else {
-  ;   dead += 1
+  ; static running := 0
+  ; if running {
+  ;   return
   ; }
-  ; if dead == 30 {
+  ; running := 1
+  ; a := WinExist('a')
+  ; active := 0
+  ; for win in windows {
+  ;   if WinGetList(win).includes(a) {
+  ;     active := 1
+  ;     break
+  ;   }
+  ; }
+  ; if active and not (WinGetList("RCTest - Capture").Length == 1) {
   ;   startCapture()
+  ;   Sleep(1000)
+  ; } else {
+  ;   if not active {
+  ;     stopCapture()
+  ;   }
   ; }
-  ; if dead == 50 {
-  ;   MsgBox("Error: video capture failed!!", "ERROR", 0x1000)
-  ;   reload()
-  ; }
+  ; running := 0
+  ; ; ToolTip(active)
+
+  static dead := 0
+  if WinGetList("RCTest - Capture").Length == 1 {
+    dead := 0
+  } else {
+    dead += 1
+  }
+  if dead == 30 {
+    startCapture()
+  }
+  if dead == 50 {
+    MsgBox("Error: video capture failed!!", "ERROR", 0x1000)
+    reload()
+  }
 }, 100)
 
 ; SetTimer(() {
@@ -179,3 +183,7 @@ SetTimer(() {
 ;     ExitApp()
 ;   }
 ; }, 100)
+clearTemp() {
+  try DirDelete("temp", 1)
+  DirCreate("temp")
+}
