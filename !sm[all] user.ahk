@@ -83,31 +83,32 @@ tasks.push(() {
 ;     }
 ; })
 #HotIf WinActive("ahk_exe dotnet.exe")
-  ; ~a::SendDll("w")
-  ; ~d::SendDll("w")
-  ^g::{
-    while GetKeyState("g", "p") {
-    }
-    while !GetKeyState("g", "p") {
-      SendDll("8")
-      Sleep(100)
-      send("{lbutton}")
-      Sleep(100)
-      SendDll("3")
-      Sleep(100)
-      Send("{lbutton down}")
-      Sleep(1000)
-      SendDll("{space down}")
-      Sleep(400)
-      SendDll("{space up}")
-      Send("{lbutton up}``")
-      Sleep(100)
-    }
-    while GetKeyState("g", "p") {
-    }
-  }
+; ~a::SendDll("w")
 
-  ; +RButton::u
+; ~d::SendDll("w")
+^g::{
+  while GetKeyState("g", "p") {
+  }
+  while !GetKeyState("g", "p") {
+    SendDll("8")
+    Sleep(100)
+    send("{lbutton}")
+    Sleep(100)
+    SendDll("3")
+    Sleep(100)
+    Send("{lbutton down}")
+    Sleep(1000)
+    SendDll("{space down}")
+    Sleep(400)
+    SendDll("{space up}")
+    Send("{lbutton up}``")
+    Sleep(100)
+  }
+  while GetKeyState("g", "p") {
+  }
+}
+
+; +RButton::u
 
 ; #HotIf WinActive("ahk_exe javaw.exe")
 ;   ; `::f24
@@ -168,3 +169,12 @@ tasks.push(() {
 ;   ;   }
 ;   ;   SendDll("{Space up}", 0, 70)
 ;   ; }
+
+#hotif ProcessExist("Godot_v4.5-beta3_win64.exe") and WinActive('ahk_class Engine')
+^+F5::
+{
+  while ProcessExist("Godot_v4.5-beta3_win64.exe") {
+    ProcessClose("Godot_v4.5-beta3_win64.exe")
+  }
+  run("D:\programs\godot\gvm.exe")
+}

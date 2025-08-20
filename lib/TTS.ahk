@@ -13,7 +13,7 @@ class TTS {
    * @param {Integer} speed speed
    * @param {Integer} vol volume
    * @param {Integer} pitch pitch
-   * @param {Integer} async return instantly instead of waiting fot the text to be done speeking
+   * @param {Integer} async return instantly instead of waiting for the text to be done speeking
    */
   static say(text, speed := 4, vol := 100, pitch := 0, async := 1) {
     async := async ? 0x1 : 0x2

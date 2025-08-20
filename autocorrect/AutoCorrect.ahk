@@ -5657,3 +5657,7 @@ return ; This makes the above hotstrings do nothing so that they override the ig
 ::emmitted::emitted
 ::baised::biased
 ::allready::already
+::freequently::frequently
+::allways::always
+::notifitcation::notification
+::multible::multiple

@@ -640,7 +640,7 @@ class NeutronWindow {
   }
 
   /**
-   * Hides the Nuetron window.
+   * Hides the Neutron window.
    * 
    * @return {NeutronWindow} The instance, for chaining
    */

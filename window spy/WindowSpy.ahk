@@ -93,11 +93,13 @@ WinSpyGui(fontSize := 11, font := "Segoe UI", Wrap := true) {
   .OnEvent("Focus", select)
   oGui.Add("Edit", "xm w340 r1 ReadOnly vCtrl_ID" (Wrap ? "" : " -Wrap"))
   .OnEvent("Focus", select)
+  oGui.Add("Edit", "xm w340 r1 ReadOnly vCtrl_processname" (Wrap ? "" : " -Wrap"))
+  .OnEvent("Focus", select)
   oGui.Add("Edit", "xm w340 r1 ReadOnly vCtrl_processpath" (Wrap ? "" : " -Wrap"))
   .OnEvent("Focus", select)
   oGui.Add("Edit", "xm w255 r1 ReadOnly vCtrl_folder" (Wrap ? "" : " -Wrap"))
   .OnEvent("Focus", select)
-  oGui.Add("Button", "xm+260 y160 w40 vCtrl_openFolder" (Wrap ? "" : " -Wrap"), "Open Folder")
+  oGui.Add("Button", "xm+260 y186 w40 vCtrl_openFolder" (Wrap ? "" : " -Wrap"), "Open Folder")
   .OnEvent("click", (*) {
     run(folder)
   })
@@ -215,7 +217,6 @@ Right_Click_Event(wParam, lParam, msg, hwnd) {
 }
 
 WinSpySize(GuiObj?, MinMax?, Width?, Height?) {
-
   Critical("Off")
   Sleep(-1)
 
@@ -280,6 +281,7 @@ TryUpdate(GuiObj?) {
   UpdateText("Ctrl_Freeze", GuiObj.txtNotFrozen)
   t3 := WinGetProcessName(), t4 := WinGetPID()
 
+  UpdateText("Ctrl_processname", WinGetProcessName(curWin))
   UpdateText("Ctrl_processpath", pp := WinGetProcessPath(curWin))
   global folder
   UpdateText("Ctrl_folder", folder := path.info(pp).parentdir)
