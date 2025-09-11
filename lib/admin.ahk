@@ -6,6 +6,9 @@ if !A_IsAdmin {
   for arg in A_Args {
     args .= ' "' . StrReplace(arg, '"', '\"') . '"'
   }
-  Run('*RunAs "' . A_AhkPath . '" "' . A_ScriptFullPath . '"' . args, A_WorkingDir)
+  if A_IsCompiled
+    Run('*RunAs "' A_ScriptFullPath . '"' . args, A_WorkingDir)
+  else
+    Run('*RunAs "' . A_AhkPath . '" "' . A_ScriptFullPath . '"' . args, A_WorkingDir)
   ExitApp()
 }

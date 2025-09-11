@@ -238,6 +238,10 @@ replace.push([
   "fucked"
 ])
 replace.push([
+  "(?<!\w)fri(?:gg|ck)(ing?|er|ed)(s?)'?(?!\w)",
+  "fuck$1$2"
+])
+replace.push([
   "MotherF'er(s?)",
   "motherfucker$1"
 ])
@@ -283,8 +287,8 @@ replace.push([
   "shit"
 ])
 replace.push([
-  "(?<!\w)arse?(?!\w)",
-  "ass"
+  "(?<!\w)arse?(holes?)?(?!\w)",
+  "ass$1"
 ])
 replace.push([
   "f\*ing(?!\w)",

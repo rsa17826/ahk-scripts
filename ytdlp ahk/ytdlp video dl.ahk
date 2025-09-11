@@ -43,21 +43,35 @@ if !urls.length
 progress := 0
 texts := {}
 fails := []
-ui := betterui({ aot: 0, h: 20, w: 350, clickthrough: 1, transparency: 180 })
+ui := betterui({
+  aot: 0,
+  h: 20,
+  w: 350,
+  clickthrough: 1,
+  transparency: 180
+})
 ui.ignoretextcolor := 1
 ui.SetFont("caaaaaa")
 ui.add("progress", {}, &progbar)
 .newLine(1.4)
-.add("text", { o: "center", t: "DOWNLOADING AS VIDEO" }, &progtext)
+.add("text", {
+  o: "center",
+  t: "DOWNLOADING AS VIDEO"
+}, &progtext)
 .newLine(1)
-.add("text", { o: "center" }, &progtext)
+.add("text", {
+  o: "center"
+}, &progtext)
 .newline()
 loop urls.length {
   if A_Index != 1
     ui.newline()
   url := urls[A_Index]
   print(url, urls)
-  ui.add("text", { t: url, o: "center" }, &text)
+  ui.add("text", {
+    t: url,
+    o: "center"
+  }, &text)
   texts.%url% := text
 }
 updateprogress()
@@ -71,7 +85,7 @@ for url in urls {
   updateprogress()
   texts.%url%.setfont(test ? "cbd0000" : "c00bd00")
   if test
-    fails.push(cmd)
+    fails.push(cmd.RegExReplace("^cmd /c `"", "").RegExReplace("`"$", ""))
 }
 if fails.length {
   msgbox("failed to download`n" A_Clipboard := fails.join("`n"))

@@ -12,7 +12,8 @@ sympathCache := cache()
 oneshots := [
   "photopea.ahk",
   "random cursor scheme.ahk - Shortcut",
-  "disable screenreader warning.ahk"
+  "disable screenreader warning.ahk",
+  "yasb.ahk",
 ]
 ; run("C:\Users\User\Desktop\glazewm\target\release\glazewm.exe")
 ignores := [
@@ -45,7 +46,6 @@ loop files, "C:\Users\" A_UserName "\AppData\Roaming\Microsoft\Windows\Start Men
   }
 }
 ToolTip(round((total - runRequired.Length) / total * 100) "% active`ntotal: " total ", active: " active)
-
 if !runRequired.Length {
   Sleep(1000)
   ExitApp()

@@ -39,10 +39,12 @@ SetTimer(RunTasks(*) {
 !F4::{
   try ProcessClose("audacity.exe")
 }
+#hotif
+
 tasks.push(() {
-  if !winactive("Save changes to")
+  if !winactive("Save changes to ahk_exe audacity.exe")
     return
-  ControlClick('Button2', "Save changes to")
+  ControlClick('Button2', "Save changes to ahk_exe audacity.exe")
   sleep(10)
 })
 
@@ -64,7 +66,7 @@ tasks.push(() {
 
 ; auto kill crash recovery audacity
 tasks.Push(() {
-  if !WinExist("Automatic Crash Recovery")
+  if !WinExist("Automatic Crash Recovery ahk_exe audacity.exe")
     return
   try WinClose()
 })
@@ -440,8 +442,8 @@ tasks.push(() {
 GODOT_eventopened := "|<>*93$183.zzzzzzzzzzzzzzzzzzzzUbzzzzzzzz0zDzzs1zzzzzzzzUTzzzs8zzzzzzzzs3tzzz0Dzzzzznzs1zzzz7bzzzzzzzz0DDzzszzzzzzyTy6Tzzzszzzzzzzzzs1twDz7swQ7YD0TlzkT8S17V6DC8sTV17C0Tsz770Q0M3wTw1s0U8s0ltk41s08tlXz0MsllVXXzXz37377766DC1X761XASDs3XCCAQQTwTsssssslsltkswlsANXlz7wFk1XXXzXz777776D6DCD06D1lASDszmC0AQQTwTsssssslsltls0lsD1Xlz7y3lzXXXzVz777776D6CCD7yD1sCATszkSDwQQTy7MMssssskkllwSskDVk3z0D3s3XXUTs3UD7777070CDU701wDVzs1szUQQS3zUS3ssssw8w9lz1w8zzzzzzzzzzzzzzzzzzzzzzzDzzzzzzzzzzzzzzzzzzzzzzzzzzzzvlzzzzzzzzzzzzzzzzzzzzzzzzzzzzz0Dzzzzzzzzzzzzzzzzzzzzzzzzzzzzs7zzzzzzzU"
 GODOT_okbtn := "|<ok btn>*75$41.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzwDCTzzznaNzzzzDgbzzzyzMTzzzxykzzzzvxYzzzznvAzzzznaRzzzzkwtzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 tasks.Push(() {
-  ; if !WinActive("ahk_class Engine")
-  ;   continue
+  if !WinActive("ahk_class Engine")
+    return
   if tryfind(GODOT_eventopened, &x, &y) {
     try {
       tryfind(GODOT_okbtn, &btnx, &btny)
@@ -634,6 +636,26 @@ $~^z::{
 #HotIf A_TickCount - ctrlXAfterZCooldown_NOW < 700
 ^x::{
 }
+#HotIf
+ctrlZAfterXCooldown_NOW := 0
+$~^x::{
+  global ctrlZAfterXCooldown_NOW
+  ctrlZAfterXCooldown_NOW := A_TickCount
+}
+
+#HotIf A_TickCount - ctrlZAfterXCooldown_NOW < 700
+^z::{
+}
+#HotIf
+tasks.Push(() {
+  ; ClassNN:	DirectUIHWND1
+  w := "VSCodium ahk_class #32770"
+  if WinExist(w) and !ControlGetHwnd("Button3", w) {
+    WinActivate(w)
+    WinKill(w)
+    send("+!g")
+  }
+})
 
 ; godot auto export
 tasks.Push(() {

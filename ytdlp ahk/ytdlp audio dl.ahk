@@ -53,7 +53,7 @@ for url in urls {
   updateprogress()
   texts.%url%.setfont(test ? "cbd0000" : "c00bd00")
   if test
-    fails.push(cmd)
+    fails.push(cmd.RegExReplace("^cmd /c `"", "").RegExReplace("`"$", ""))
 }
 if fails.length {
   msgbox("failed to download`n" A_Clipboard := fails.join("`n"))

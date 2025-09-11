@@ -111,6 +111,7 @@ Swap(&a, &b) {
   b := temp
 }
 
+logPrints := 0
 /**
  * Prints the formatted value of a variable (number, string, object).
  */
@@ -163,7 +164,7 @@ Print(values*) {
     text := text.substr(idx)
   }
   logdata(data) {
-    if A_IsCompiled {
+    if A_IsCompiled || logPrints {
       f.writeLine(path.join(A_ScriptDir, './logs/') '/' A_ScriptName '.ans', fg(25) "---------------------------------------------------`n" fg() data)
     }
     return data
@@ -1039,7 +1040,42 @@ class path {
     return path.joincache.set(str)
   }
 
-  ; asd
+  static exists(paths*) {
+    return path.info(paths*).exists
+  }
+  static isdir(paths*) {
+    return path.info(paths*).isdir
+  }
+  static isfile(paths*) {
+    return path.info(paths*).isfile
+  }
+  static abspath(paths*) {
+    return path.info(paths*).abspath
+  }
+  static relpath(paths*) {
+    return path.info(paths*).relpath
+  }
+  static isAbs(paths*) {
+    return path.info(paths*).isAbs
+  }
+  static isRel(paths*) {
+    return path.info(paths*).isRel
+  }
+  static nameandext(paths*) {
+    return path.info(paths*).nameandext
+  }
+  static ext(paths*) {
+    return path.info(paths*).ext
+  }
+  static name(paths*) {
+    return path.info(paths*).name
+  }
+  static parentdirname(paths*) {
+    return path.info(paths*).parentdirname
+  }
+  static parentdir(paths*) {
+    return path.info(paths*).parentdir
+  }
   static info(paths*) {
     p := path.join(paths*)
     if path.infocache.has(p) {

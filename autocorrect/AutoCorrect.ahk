@@ -1,4 +1,6 @@
-﻿; c = case sensitive
+﻿#Requires AutoHotkey v2.0
+#SingleInstance Force
+; c = case sensitive
 ; c1 = ignore the case that was typed, always use the same case for output
 ; * = immediate change (no need for space, period, or enter)
 ; ? = triggered even when the character typed immediately before it is alphanumeric
@@ -64,11 +66,11 @@
 ;------------------------------------------------------------------------------
 ; Settings
 ;------------------------------------------------------------------------------
-#NoEnv ; For security
+; V1toV2: Removed #NoEnv ; For security
 #SingleInstance force
 
 ; Custom icon from http://www.famfamfam.com/lab/icons/silk/preview.php
-Menu, Tray, Icon, text_replace.ico
+TraySetIcon("text_replace.ico")
 
 ;------------------------------------------------------------------------------
 ; AUto-COrrect TWo COnsecutive CApitals.
@@ -90,66 +92,72 @@ Hoty:
         SendInput % "{Left}{BS}+" . SubStr(A_PriorHotKey,3,1) . "{Right}"
 Return
 */
-
+_Hotstring := ''
 ;------------------------------------------------------------------------------
 ; Win+A to enter misspelling correction.  It will be added to this script.
 ;------------------------------------------------------------------------------
 ^#a::
-    ; Get the selected text. The clipboard is used instead of "ControlGet Selected"
-    ; as it works in more editors and word processors, java apps, etc. Save the
-    ; current clipboard contents to be restored later.
-    AutoTrim On  ; Delete any leading and trailing whitespace on the clipboard.  Why would you want this?
-    ClipboardOld = %ClipboardAll%
-    Clipboard =  ; Must start off blank for detection to work.
-    Send ^c
-    ClipWait 1
-    if ErrorLevel  ; ClipWait timed out.
-        return
-    ; Replace CRLF and/or LF with `n for use in a "send-raw" hotstring:
-    ; The same is done for any other characters that might otherwise
-    ; be a problem in raw mode:
-    StringReplace, Hotstring, Clipboard, ``, ````, All  ; Do this replacement first to avoid interfering with the others below.
-    StringReplace, Hotstring, Hotstring, `r`n, ``r, All  ; Using `r works better than `n in MS Word, etc.
-    StringReplace, Hotstring, Hotstring, `n, ``r, All
-    StringReplace, Hotstring, Hotstring, %A_Tab%, ``t, All
-    StringReplace, Hotstring, Hotstring, `;, ```;, All
-    Clipboard = %ClipboardOld%  ; Restore previous contents of clipboard.
-    ; This will move the InputBox's caret to a more friendly position:
-    SetTimer, MoveCaret, 10
-    ; Show the InputBox, providing the default hotstring:
-    InputBox, Hotstring, New Hotstring, Provide the corrected word on the right side. You can also edit the left side if you wish.`n`nExample entry:`n::teh::the,,,,,,,, ::%Hotstring%::%Hotstring%
+; Get the selected text. The clipboard is used instead of "ControlGet Selected"
+; as it works in more editors and word processors, java apps, etc. Save the
+; current clipboard contents to be restored later.
+; V1toV2: Removed     AutoTrim On  ; Delete any leading and trailing whitespace on the clipboard.  Why would you want this?
+{ ; V1toV2: Added bracket
+  ClipboardOld := ClipboardAll()
+  global _Hotstring
+  A_Clipboard := "" ; Must start off blank for detection to work.
+  Send("^c")
+  Errorlevel := !ClipWait(1)
+  if ErrorLevel ; ClipWait timed out.
+    return
+  ; Replace CRLF and/or LF with `n for use in a "send-raw" hotstring:
+  ; The same is done for any other characters that might otherwise
+  ; be a problem in raw mode:
+  _Hotstring := StrReplace(A_Clipboard, "`, ```, All", , , , 1) ; Do this replacement first to avoid interfering with the others below.
+  _Hotstring := StrReplace(_Hotstring, "`r`n", "``r") ; Using `r works better than `n in MS Word, etc.
+  _Hotstring := StrReplace(_Hotstring, "`n", "``r")
+  _Hotstring := StrReplace(_Hotstring, A_Tab, "``t")
+  _Hotstring := StrReplace(_Hotstring, "`;", "```;")
+  A_Clipboard := ClipboardOld ; Restore previous contents of clipboard.
+  ; This will move the InputBox's caret to a more friendly position:
+  SetTimer(MoveCaret, 10)
+  ; Show the InputBox, providing the default _hotstring:
+  IB := InputBox("Provide the corrected word on the right side. You can also edit the left side if you wish.`n`nExample entry:`n::teh::the", "New _Hotstring", , "::" _Hotstring "::" _Hotstring), _Hotstring := IB.Value, ErrorLevel := IB.Result = "OK" ? 0 : IB.Result = "CANCEL" ? 1 : IB.Result = "Timeout" ? 2 : "ERROR"
 
-    if ErrorLevel <> 0  ; The user pressed Cancel.
-        return
-    ; Otherwise, add the hotstring and reload the script:
-    FileAppend, `n%Hotstring%, %A_ScriptFullPath%  ; Put a `n at the beginning in case file lacks a blank line at its end.
-    ; it would be best if it overwrote the string you had highlighted with the replacement you just typed in
-    Reload
-    Sleep 3000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
-    MsgBox, 4,, The hotstring just added appears to be improperly formatted.  Would you like to open the script for editing? Note that the bad hotstring is at the bottom of the script.
-    IfMsgBox, Yes, Edit
-        return
+  if (ErrorLevel != 0) ; The user pressed Cancel.
+    return
+  ; Otherwise, add the _hotstring and reload the script:
+  FileAppend("`n" _Hotstring, A_ScriptFullPath) ; Put a `n at the beginning in case file lacks a blank line at its end.
+  ; it would be best if it overwrote the string you had highlighted with the replacement you just typed in
+  Reload()
+  Sleep(3000) ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
+  msgResult := MsgBox("The _hotstring just added appears to be improperly formatted.  Would you like to open the script for editing? Note that the bad hotstring is at the bottom of the script.", , 4)
+  if (msgResult = "Yes")
+    Edit()
+  return
+} ; V1toV2: Added bracket before function
 
-MoveCaret:
-    IfWinNotActive, New Hotstring
-        return
-    ; Otherwise, move the InputBox's insertion point to where the user will type the abbreviation.
-    Send {HOME}
-    Loop % StrLen(Hotstring) + 4
-        SendInput {Right}
-    SetTimer, MoveCaret, Off
-return
+MoveCaret() { ; V1toV2: Added bracket
+  if !WinActive("New _Hotstring")
+    return
+  ; Otherwise, move the InputBox's insertion point to where the user will type the abbreviation.
+  Send("{HOME}")
+  ; loop StrLen(_Hotstring) + 4
+  ;   SendInput("{Right}")
+  SendInput("{Right " StrLen(_Hotstring) + 4 "}")
+  SetTimer(MoveCaret, 0)
+  return
 
-#Hotstring R ; Set the default to be "raw mode" (might not actually be relied upon by anything yet).
+  #HotString R ; Set the default to be "raw mode" (might not actually be relied upon by anything yet).
 
-;------------------------------------------------------------------------------
-; Fix for -ign instead of -ing.
-; These words are excluded from the ign->ing conversion by defining empty
-; hotstrings that return without replacement
-; From: http://www.morewords.com/ends-with/gn/
-;------------------------------------------------------------------------------
-#Hotstring B0 ; Turns off automatic backspacing for the following hotstrings.
-; Can be suffix exceptions, too, but should correct "-aling" without correcting "-align".
+  ;------------------------------------------------------------------------------
+  ; Fix for -ign instead of -ing.
+  ; These words are excluded from the ign->ing conversion by defining empty
+  ; hotstrings that return without replacement
+  ; From: http://www.morewords.com/ends-with/gn/
+  ;------------------------------------------------------------------------------
+  #HotString B0 ; Turns off automatic backspacing for the following hotstrings.
+  ; Can be suffix exceptions, too, but should correct "-aling" without correcting "-align".
+} ; V1toV2: Added Bracket before hotkey or Hotstring
 ::align::
 ::antiforeign::
 ::arraign::
@@ -190,9 +198,11 @@ return
 ::unalign::
 ::unbenign::
 ::verisign::
-return ; This makes the above hotstrings do nothing so that they override the ign->ing rule below.
+{ ; V1toV2: Added bracket
+  return ; This makes the above hotstrings do nothing so that they override the ign->ing rule below.
 
-#Hotstring B ; Turn back on automatic backspacing for all subsequent hotstrings.
+  #HotString B ; Turn back on automatic backspacing for all subsequent hotstrings.
+} ; V1toV2: Added Bracket before hotkey or Hotstring
 :?:ign::ing
 
 ;------------------------------------------------------------------------------
@@ -203,8 +213,8 @@ return ; This makes the above hotstrings do nothing so that they override the ig
 :?:blities::bilities
 :?:bilty::bility
 :?:blity::bility
-:?:, btu::, but ; Not just replacing "btu", as that is a unit of heat.
-:?:; btu::; but
+:?"":, btu::, but ; Not just replacing "btu", as that is a unit of heat.
+:?"":; btu::; but
 :?:n;t::n't
 :?:;ll::'ll
 :?:;re::'re
@@ -212,7 +222,7 @@ return ; This makes the above hotstrings do nothing so that they override the ig
 ::sice::since ; Must precede the following line!
 :?:sice::sive
 ;:?:t eh:: the   ; converts "but eh" to "bu the"
-:?:t hem:: them
+:?"":t hem:: them
 
 ;------------------------------------------------------------------------------
 ; Word beginnings
@@ -5661,3 +5671,54 @@ return ; This makes the above hotstrings do nothing so that they override the ig
 ::allways::always
 ::notifitcation::notification
 ::multible::multiple
+::cusotm::custom
+::havnt::haven't
+::transperant::transparent
+::immedietly::immediately
+::wether::weather
+::willl::will
+::blocs::blocks
+::coppies::copies
+::coppied::copied
+::erorr::error
+::wahts::what's
+::detecors::detectors
+::chanel::channel
+::albe::able
+::feild::field
+::realised::realized
+:*X:/lnlog::javalogln
+:*X:/flog::javalogf
+:*X:/log::javalogf
+:*X:/print::javalogf
+:*X:/err::javaerr
+:*X:/setr::setter
+setter() {
+  name := input('name').ToLower()
+  A_Clipboard := ("
+  (
+    public TYPE getUPPER() {
+      return LOWER;
+  }
+
+  public void setUPPER(TYPE LOWER) {
+      this.LOWER = LOWER;
+  }
+  )".Replace("UPPER", name[1].ToUpper() name[2, -1]).replace("LOWER", name).replace("TYPE", input("type", "String", , , 'String')))
+  send("^v")
+}
+javalogf() {
+  Send("System.out.printf();{left 2}")
+}
+javalogln() {
+  Send("System.out.println();{left 2}")
+}
+javaerr() {
+  Send("System.err.printf();{left 2}")
+}
+
+::Explination::Explanation
+::calss::class
+#Include <Misc>
+::lisense::license
+::lisense::license

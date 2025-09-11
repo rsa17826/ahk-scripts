@@ -170,11 +170,15 @@ tasks.push(() {
 ;   ;   SendDll("{Space up}", 0, 70)
 ;   ; }
 
-#hotif ProcessExist("Godot_v4.5-beta3_win64.exe") and WinActive('ahk_class Engine')
+#hotif ProcessExist("Godot_v4.5-beta6_win64.exe") ; and WinActive('ahk_class Engine')
 ^+F5::
 {
-  while ProcessExist("Godot_v4.5-beta3_win64.exe") {
-    ProcessClose("Godot_v4.5-beta3_win64.exe")
+  ; MsgBox(WinGetInfo('a'))
+  ; MsgBox(ProcessExist("Godot_v4.5-beta6_win64.exe"))
+  while ProcessExist("Godot_v4.5-beta6_win64.exe") {
+    ProcessClose("Godot_v4.5-beta6_win64.exe")
   }
-  run("D:\programs\godot\gvm.exe")
+  run("D:\programs\godot\Godot_v4.5-beta6_win64.exe --path D:/godotgames/vex --editor")
+  ; run("D:\programs\godot\Godot_v4.5-beta6_win64.exe")
+  ; run("D:\programs\godot\gvm.exe")
 }

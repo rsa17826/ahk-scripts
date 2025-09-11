@@ -90,7 +90,22 @@ while true {
 ; joy8::{
 ;   Print(godotpid , WinExist(godotpid) , WinGetMinMax(godotpid) != -1 , WinGetMinMax("ahk_exe VSCodium.exe") == 0)
 ; }
-#HotIf godotpid and WinExist(godotpid) and WinGetMinMax(godotpid) != -1 and (WinActive("ahk_class Engine") || WinActive("ahk_exe VSCodium.exe")) and WinGetMinMax("ahk_exe VSCodium.exe") == 0
+#HotIf godotpid and WinExist(godotpid) and WinGetMinMax(godotpid) != -1 and (
+  (
+    WinActive("ahk_class Engine") || (
+      WinExist("ahk_exe VSCodium.exe") and WinActive("ahk_exe VSCodium.exe")
+    )
+  )
+  and (
+    WinGetMinMax("ahk_exe VSCodium.exe") == 0 || !WinExist("ahk_exe VSCodium.exe")
+  )
+)
+$F12::{
+  try ControlSend("{F12}", , godotpid)
+  catch
+    reload()
+  winwasactive := 0
+}
 joy8::
 $F5::
 ^$F5::{
