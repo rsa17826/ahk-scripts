@@ -171,7 +171,7 @@ tasks.push(() {
 ;   ; }
 
 #hotif ProcessExist("Godot_v4.5-beta6_win64.exe") ; and WinActive('ahk_class Engine')
-^+F5::
+^+!F5::
 {
   ; MsgBox(WinGetInfo('a'))
   ; MsgBox(ProcessExist("Godot_v4.5-beta6_win64.exe"))

@@ -26,3 +26,5 @@ logs
 temp
 counter
 */*.7z
+logs
+**//logs

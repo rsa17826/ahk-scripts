@@ -1175,6 +1175,18 @@ class F {
    * @param path name of the file to write to
    * @param text text to write to the file
    */
+  static writeLineToTop(path, text) {
+    temp := this.read(path)
+    if temp
+      text := text '`n' temp
+    this.write(path, text)
+  }
+
+  /**
+   * 
+   * @param path name of the file to write to
+   * @param text text to write to the file
+   */
   static writeLine(path, text) {
     temp := this.read(path)
     if temp
@@ -2227,7 +2239,15 @@ class Time {
   static nanosecond := 1000 / Time.microsecond
   static picosecond := 1000 / Time.nanosecond
   static femtosecond := 1000 / Time.picosecond
+  static format(time) {
+    ms := floor(mod(time, 1000))
+    s := floor(mod(time / 1000, 60))
+    m := floor(mod(time / 60000, 60))
 
+    ; formattedTime := Format("{:02X}:{:02X}:{:03X}", m, s, ms)
+    return m ':' s '.' ms
+
+  }
   static sec := 1000 * Time.ms
   static second := Time.sec
   static min := 60 * Time.sec
@@ -2235,12 +2255,12 @@ class Time {
   static hr := 60 * Time.min
   static hour := Time.hr
   static day := 24 * Time.hr
-  static year := 365.25 * Time.day
   static week := 7 * Time.day
-  static century := 100 * Time.year
-  static month := 30.4375 * Time.day
-  static decade := 10 * Time.year
   static fortnight := 14 * Time.day
+  static month := 30.4375 * Time.day
+  static year := 365.25 * Time.day
+  static decade := 10 * Time.year
+  static century := 100 * Time.year
   static millennium := 1000 * Time.year
 }
 
@@ -2265,6 +2285,22 @@ class timer {
   }
   expire() {
     this.startTime -= this.timerLength
+  }
+}
+class Stopwatch {
+  startTime := 0
+  __New(name := '') {
+    this.startTime := A_TickCount
+    this.name := name
+  }
+  restart() {
+    this.startTime := A_TickCount
+  }
+  getTime() {
+    return A_TickCount - this.startTime
+  }
+  printTimePassed() {
+    print(this.name "TIME PASSED: " A_TickCount - this.startTime)
   }
 }
 
@@ -2319,6 +2355,43 @@ listCursors() {
     arr.push(A_LoopRegName)
   }
   return arr
+}
+addCursorScheme(Scheme, SchemeFolder) {
+  KeyNames := [
+    "Arrow",
+    "Help",
+    "AppStarting",
+    "Wait",
+    "Crosshair",
+    "IBeam",
+    "NWPen",
+    "No",
+    "SizeNS",
+    "SizeWE",
+    "SizeNWSE",
+    "SizeNESW",
+    "SizeAll",
+    "UpArrow",
+    "Hand",
+    "Pin",
+    "Person"
+  ]
+  KEYpath := "HKEY_CURRENT_USER\Control Panel\Cursors"
+  SPI_SETCURSORS := 0x0057
+
+  RegCreateKey("HKEY_CURRENT_USER\Control Panel\Cursors\Schemes")
+
+  RegWrite(Scheme, "REG_SZ", KEYpath)
+  for val in KeyNames {
+    cursorFile := SchemeFolder . "\" . val . ".cur"
+    if not FileExist(cursorFile)
+      cursorFile := SchemeFolder . "\" . val . ".ani"
+    if (FileExist(cursorFile)) {
+      RegWrite(cursorFile, "REG_EXPAND_SZ", KEYpath, val)
+    }
+  }
+
+  DllCall("SystemParametersInfo", "UInt", SPI_SETCURSORS, "UInt", 0, "UInt", 0, "UInt", 0)
 }
 setCursors(Scheme) {
   KeyNames := [

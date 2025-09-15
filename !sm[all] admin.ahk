@@ -712,3 +712,5 @@ tasks.Push(() {
 ; $^#Numpad7 up::
 ; $^#Numpad8 up::
 ; $^#Numpad9 up::
+
+run('D:\programs\nirsoft\SoundVolumeView\SoundVolumeView.exe /setvolume "discord" 25')

@@ -1,5 +1,6 @@
 ﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
+#Include <Misc>
 ; c = case sensitive
 ; c1 = ignore the case that was typed, always use the same case for output
 ; * = immediate change (no need for space, period, or enter)
@@ -5687,12 +5688,12 @@ MoveCaret() { ; V1toV2: Added bracket
 ::albe::able
 ::feild::field
 ::realised::realized
-:*X:/lnlog::javalogln
-:*X:/flog::javalogf
-:*X:/log::javalogf
-:*X:/print::javalogf
-:*X:/err::javaerr
-:*X:/setr::setter
+:*X:/?lnlog::javalogln
+:*X:/?flog::javalogf
+:*X:/?log::javalogf
+:*X:/?print::javalogf
+:*X:/?err::javaerr
+:*X:/?setr::setter
 setter() {
   name := input('name').ToLower()
   A_Clipboard := ("
@@ -5719,6 +5720,7 @@ javaerr() {
 
 ::Explination::Explanation
 ::calss::class
-#Include <Misc>
 ::lisense::license
 ::lisense::license
+::lables::labels
+::laucher::launcher
