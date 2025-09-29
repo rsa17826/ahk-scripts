@@ -624,8 +624,6 @@ DllCall("ShowCursor", "UInt", 1)
 tasks.Push(() {
   try WinClose("Authorization required ahk_exe javaw.exe ahk_class SunAwtDialog")
 })
-::beleive::believe
-::dont::don't
 
 ctrlXAfterZCooldown_NOW := 0
 $~^z::{
@@ -714,3 +712,18 @@ tasks.Push(() {
 ; $^#Numpad9 up::
 
 run('D:\programs\nirsoft\SoundVolumeView\SoundVolumeView.exe /setvolume "discord" 25')
+if RegRead("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "Discord", 0) {
+  RegDelete("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "Discord")
+  run('"D:\programs\betterdiscord cli installer\cli.exe" install stable')
+  ; run("C:\Users\User\Downloads\Applications\Windows\BetterDiscord-Windows.exe")
+}
+
+#HotIf WinActive('ahk_exe explorer.exe')
+^+b::{
+  send("^lcmd{enter}")
+  if WinWaitActive("ahk_exe WindowsTerminal.exe", , 1) {
+    pass := envget("sshpass")
+    send("git add .{enter}git commit -m `"no message set`"{enter}" pass "{enter}git push{enter}" pass "{Enter}")
+  }
+}
+#HotIf

@@ -1,6 +1,6 @@
 #SingleInstance Force
 #Requires Autohotkey v2.0
-
+#Include <AutoThemed>
 try TraySetIcon("icon.ico")
 SetWorkingDir(A_ScriptDir)
 #Include <Misc>

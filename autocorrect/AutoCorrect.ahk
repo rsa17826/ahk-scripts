@@ -5695,7 +5695,7 @@ MoveCaret() { ; V1toV2: Added bracket
 :*X:/?err::javaerr
 :*X:/?setr::setter
 setter() {
-  name := input('name').ToLower()
+  name := input('name')
   A_Clipboard := ("
   (
     public TYPE getUPPER() {
@@ -5724,3 +5724,19 @@ javaerr() {
 ::lisense::license
 ::lables::labels
 ::laucher::launcher
+::aan::an
+:*:~/::c:/users/user/
+::serach::search
+::unnessary::unnecessary
+::condences::condenses
+::suriken::shuriken
+::suprise::surprise
+::shurikan::shuriken
+::scithe::scythe
+::reentrers::reenters
+::nmae::name
+:*c:L`:::`:
+::doestn::doesn't
+::shurikans::shurikens
+::its::it's
+::fing::find

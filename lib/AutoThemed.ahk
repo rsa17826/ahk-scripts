@@ -74,8 +74,14 @@ class __MsgBox {
   static __New() {
     POINT(x := 0, y := 0) {
       NumPut("int", x, "int", y, buf := Buffer(8))
-      buf.DefineProp("x", { Get: NumGet.Bind(, 0, "int"), Set: IntPut.Bind(0) })
-      buf.DefineProp("y", { Get: NumGet.Bind(, 4, "int"), Set: IntPut.Bind(4) })
+      buf.DefineProp("x", {
+        Get: NumGet.Bind(, 0, "int"),
+        Set: IntPut.Bind(0)
+      })
+      buf.DefineProp("y", {
+        Get: NumGet.Bind(, 4, "int"),
+        Set: IntPut.Bind(4)
+      })
       return buf
     }
 
@@ -83,7 +89,10 @@ class __MsgBox {
       static ofst := Map("left", 0, "top", 4, "right", 8, "bottom", 12)
       NumPut("int", left, "int", top, "int", right, "int", bottom, buf := Buffer(16))
       for k, v in ofst
-        buf.DefineProp(k, { Get: NumGet.Bind(, v, "int"), Set: IntPut.Bind(v) })
+        buf.DefineProp(k, {
+          Get: NumGet.Bind(, v, "int"),
+          Set: IntPut.Bind(v)
+        })
       return buf
     }
 
@@ -93,8 +102,12 @@ class __MsgBox {
     static nativeMsgbox := MsgBox.Call.Bind(MsgBox)
     static nativeInputBox := InputBox.Call.Bind(InputBox)
     if !RegRead("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", 1) {
-      MsgBox.DefineProp("Call", { Call: BoxEx })
-      InputBox.DefineProp("Call", { Call: BoxEx })
+      MsgBox.DefineProp("Call", {
+        Call: BoxEx
+      })
+      InputBox.DefineProp("Call", {
+        Call: BoxEx
+      })
     }
 
     BoxEx(_this, params*) {
@@ -265,7 +278,10 @@ class __MsgBox {
             }
             case WM_DESTROY:
             {
-              for v in [hbrush1, hbrush2]
+              for v in [
+                hbrush1,
+                hbrush2
+              ]
                 (v && DeleteObject(v))
 
               for v in hIcons

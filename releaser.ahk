@@ -22,7 +22,9 @@ if A_Args.Length >= 1 and
     uploadPaths.Push(A_LoopFileFullPath)
   }
 } else {
-  loop files (path.join(A_Args.Length >= 2 ? A_Args[2] : input("enter folder parent path", "", , , A_Clipboard)) '/*').replace("//", '/'), 'D' {
+  ppp := (path.join(A_Args.Length >= 2 ? A_Args[2] : input("enter folder parent path", "", , , A_Clipboard)) '/*').replace("//", '/')
+  SetWorkingDir(ppp.replace('/*', ''))
+  loop files ppp, 'D' {
     uploadPaths.Push(A_LoopFileFullPath)
   }
 }
@@ -33,8 +35,11 @@ if !confirm(uploadPaths.join("`n"))
   ExitApp()
 
 DetectHiddenWindows(1)
-; win := getConsole(A_WorkingDir, "hide")
+win := getConsole(A_WorkingDir, "hide")
 RunWait("cmd /c gh release list --json tagName > test.txt")
+; versions := [
+;   1
+; ]
 versions := JSON.parse(f.read("test.txt"), 0, 0)
 FileDelete("test.txt")
 uploadPaths := uploadPaths.map(e => e.trim('"'))
@@ -55,6 +60,14 @@ while GetKeyState("shift", "p") || GetKeyState("ctrl", "p") || GetKeyState("alt"
 WinActivate(win)
 text := 'echo Version: ' version
 for p in uploadPaths {
+  scriptPath := A_ScriptDir '\' p.replace(A_ScriptDir '\', '').replace("\", ",") '.ahk'
+  if FileExist(scriptPath) {
+    err := runwait(A_AhkPath ' /script "' scriptPath '" "' p '"')
+    if err {
+      try MsgBox(scriptPath " exited with error " err)
+      ExitApp(-1)
+    }
+  }
   text .= '`nCompress-Archive -Path "__PATH__\*" -DestinationPath "__PATH__.zip" -Force'.replace("__PATH__", p)
 }
 text .= '`ngh release create "__VERSION__" "__PATHS__" --notes ""'.replace("__VERSION__", version).replace("__PATHS__", uploadPaths.map(e => e '.zip').join('" "'))
