@@ -24,7 +24,7 @@
     Array.Shuffle()                         => Randomizes the array.
     Array.Join(delim:=",")                  => Joins all the elements to a string using the provided delimiter.
     Array.Flat()                            => Turns a nested array into a one-level array.
-    Array.Extend(enums*)                    => Adds the values of other arrays or enumerables to the end of this one.
+    Array.Extend(enums*)                    => Adds the values of other arrays or enums to the end of this one.
 */
 
 Array.Prototype.base := Array2

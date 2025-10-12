@@ -5622,9 +5622,6 @@ MoveCaret() { ; V1toV2: Added bracket
 ::coulnd't::couldn't
 ::coulndt::couldn't
 ::cutre::cuter
-::db::dB
-::dbfs::dBFS
-::dbu::dBu
 ::differnet::different
 ::enuogh::enough
 ::extrmely::extremely
@@ -5636,10 +5633,10 @@ MoveCaret() { ; V1toV2: Added bracket
 ::imaginig::imagining
 ::ipmedance::impedance
 ::ive::I've
-::khz::kHz
-::mhz::MHz
+; ::khz::kHz
+; ::mhz::MHz
 ::nad::and
-::pcb::PCB
+; ::pcb::PCB
 ::poewr::power
 ::poictures::pictures
 ::probalby::probably
@@ -5694,28 +5691,37 @@ MoveCaret() { ; V1toV2: Added bracket
 :*X:/?print::javalogf
 :*X:/?err::javaerr
 :*X:/?setr::setter
+:*X:/?git::git
 setter() {
   name := input('name')
   A_Clipboard := ("
   (
-    public TYPE getUPPER() {
-      return LOWER;
+    public --TYPE get--UPPER() {
+      return --LOWER;
   }
 
-  public void setUPPER(TYPE LOWER) {
-      this.LOWER = LOWER;
+  public void set--UPPER(--TYPE --LOWER) {
+      this.--LOWER = --LOWER;
   }
-  )".Replace("UPPER", name[1].ToUpper() name[2, -1]).replace("LOWER", name).replace("TYPE", input("type", "String", , , 'String')))
+  )".Replace("--UPPER", name[1].ToUpper() name[2, -1]).replace("--LOWER", name).replace("--TYPE", input("type", "String", , , 'String')))
   send("^v")
+  reload()
+}
+git() {
+  Send("git add .{enter}git commit -m `"`"{left}")
+  reload()
 }
 javalogf() {
   Send("System.out.printf();{left 2}")
+  reload()
 }
 javalogln() {
   Send("System.out.println();{left 2}")
+  reload()
 }
 javaerr() {
   Send("System.err.printf();{left 2}")
+  reload()
 }
 
 ::Explination::Explanation
@@ -5740,3 +5746,12 @@ javaerr() {
 ::shurikans::shurikens
 ::its::it's
 ::fing::find
+::usualy::usually
+::subnitted::submitted
+::Pratice::Practice
+::conveyor::conveyor
+::scriopt::script
+::lkog::log
+::cobalds::kobolds
+::inconsistant::inconsistent
+::lable::label

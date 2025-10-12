@@ -661,8 +661,8 @@ tasks.Push(() {
   if !win
     return
   WinActivate(win)
-  MouseMove(148, 574, 0)
-  Click()
+  ; MouseMove(148, 574, 0)
+  ; Click()
   if not WinExist("Export ahk_class Engine")
     return
   win := WinWait("Export All ahk_class Engine")
@@ -727,3 +727,32 @@ if RegRead("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "D
   }
 }
 #HotIf
+
+$^+v::{
+  start := A_Clipboard
+  A_Clipboard := A_Clipboard.replace("\", "/")
+  SendDll("{shift up}{ctrl up}^v")
+  if GetKeyState("ctrl", 'p') {
+    SendDll("{ctrl down}")
+  }
+  if GetKeyState("shift", 'p') {
+    SendDll("{shift down}")
+  }
+  Sleep(100)
+  if !GetKeyState("ctrl", 'p') {
+    SendDll("{ctrl up}")
+  }
+  if !GetKeyState("shift", 'p') {
+    SendDll("{shift up}")
+  }
+}
+if WinExist("YasbBar ahk_class Qt691QWindowToolSaveBits")
+  WinSetAlwaysOnTop(1,)
+
+^+q::{
+  WinClose("a")
+}
+
+^!t::{
+  Run("cmd")
+}
