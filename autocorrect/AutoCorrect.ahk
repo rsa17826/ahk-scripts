@@ -5755,3 +5755,13 @@ javaerr() {
 ::cobalds::kobolds
 ::inconsistant::inconsistent
 ::lable::label
+::wouldntve::wouldn't've
+::wouldn'tve::wouldn't've
+::parseing::parsing
+::deattach::detach
+::reciving::receiving
+::eletric::electric
+::immedietly::immediately
+::worjing::working
+::versiuon::version
+::portian::portion

@@ -753,6 +753,9 @@ if WinExist("YasbBar ahk_class Qt691QWindowToolSaveBits")
   WinClose("a")
 }
 
-^!t::{
-  Run("cmd")
+^!+t::{
+  if WinActive("ahk_exe explorer.exe")
+    SendDll("{alt up}{shift up}^lcmd /k sudo{enter}")
+  else
+    Run("cmd")
 }

@@ -3,8 +3,11 @@
 #Include <base>
 #Include <betterui>
 
-#SingleInstance Ignore
-urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+").map((e) => e[0].RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", ''))
+#SingleInstance off
+urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+")
+urls := urls.map(e => e[0].split("\n"))
+urls := urls.flat()
+urls := urls.map((e) => e.RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", ''))
 if !urls.length
   return
 progress := 0

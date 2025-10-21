@@ -170,7 +170,8 @@ tasks.push(() {
 ;   ;   SendDll("{Space up}", 0, 70)
 ;   ; }
 
-#hotif ProcessExist("Godot_v4.5-stable_win64.exe") ; and WinActive('ahk_class Engine')
+#hotif
+; #hotif ProcessExist("Godot_v4.5-stable_win64.exe") ; and WinActive('ahk_class Engine')
 ^+!F5::
 {
   ; MsgBox(WinGetInfo('a'))
@@ -181,4 +182,10 @@ tasks.push(() {
   run("D:\programs\godot\Godot_v4.5-stable_win64.exe --path D:/godotgames/vex --editor")
   ; run("D:\programs\godot\Godot_v4.5-stable_win64.exe")
   ; run("D:\programs\godot\gvm.exe")
+}
+^!t::{
+  if WinActive("ahk_exe explorer.exe")
+    SendDll("{alt up}^lcmd{enter}")
+  else
+    Run("cmd")
 }
