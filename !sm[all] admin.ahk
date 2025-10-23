@@ -291,20 +291,35 @@ a::{
 OnNewWindow((lParam) {
   try {
     ; try IniWrite(WinGetTitle(lParam), "c:\users\user\openedwindows.ini", "opened windows: " A_Now)
-    text := (
-      ; "process name: " WinGetProcessName("ahk_id " lParam)
-      ; "`nprocess path: " WinGetProcessPath("ahk_id " lParam)
+    text := ''
+    ; text.='`n' ProcessGetParent("ahk_id " lParam)
+    try {
+      text .= 'process id: ' lParam
+      ; text .= '`nprocess name: ' WinGetProcessName("ahk_id " lParam)
+      text .= '`nprocess path: ' WinGetProcessPath("ahk_id " lParam)
+      try {
+        pp := ProcessGetParent(WinGetProcessName("ahk_id " lParam))
+        text .= '`nparent process id: ' pp
+        ; text .= '`nparent process name: ' ProcessGetName(pp)
+        text .= '`nparent process path: ' ProcessGetPath(pp)
+      }catch Error as e{
+        text.="`nfailed to get parent process info because `"" e.message '"'
+      }
+    }catch Error as e{
+      text.="`nfailed to get process info because `"" e.message '"'
+    }
+    text .= (
       ; "`nwindow title: " WinGetTitle("ahk_id " lParam)
-      ; "`n"
-      WinGetInfo("ahk_id " lParam)
+      "`n"
+      (WinGetInfo("ahk_id " lParam)
       .RegExReplace("TransColor:[\s\S]*$", '`n`n')
       .split("`n")
       .filter(e =>
-        !(e.startsWith("ahk_id") or e.startsWith("ahk_pid") or e.startsWith("Screen position")))).join("`n")
+        !(e.startsWith("ahk_id") or e.startsWith("ahk_pid") or e.startsWith("Screen position")))).join("`n"))
     try IniWrite(text, "c:\users\user\openedwindows.ini", "opened windows: " A_Now)
     todark("ahk_id " lParam)
-  } catch {
-    try IniWrite("failed to get window", "c:\users\user\openedwindows.ini", "opened windows: " A_Now)
+  } catch Error as e {
+    try IniWrite("failed to get window because `"" e.message '"', "c:\users\user\openedwindows.ini", "opened windows: " A_Now)
   }
 
   ; auto aot for xdm download window
@@ -754,7 +769,7 @@ if WinExist("YasbBar ahk_class Qt691QWindowToolSaveBits")
 }
 
 ^!+t::{
-  if WinActive("ahk_exe explorer.exe")
+  if WinActive("ahk_exe explorer.exe ahk_class CabinetWClass")
     SendDll("{alt up}{shift up}^lcmd /k sudo{enter}")
   else
     Run("cmd")

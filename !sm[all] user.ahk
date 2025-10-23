@@ -184,7 +184,7 @@ tasks.push(() {
   ; run("D:\programs\godot\gvm.exe")
 }
 ^!t::{
-  if WinActive("ahk_exe explorer.exe")
+  if WinActive("ahk_exe explorer.exe ahk_class CabinetWClass")
     SendDll("{alt up}^lcmd{enter}")
   else
     Run("cmd")
