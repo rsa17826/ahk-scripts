@@ -7,7 +7,7 @@
 urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+")
 urls := urls.map(e => e[0].split("\n"))
 urls := urls.flat()
-urls := urls.map((e) => e.RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", ''))
+urls := urls.map((e) => e.RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", '').Replace("'", '').Replace('"', ''))
 if !urls.length
   return
 progress := 0

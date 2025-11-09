@@ -5104,7 +5104,7 @@ MoveCaret() { ; V1toV2: Added bracket
 ::warrriors::warriors
 ::wass::was
 ::weas::was
-::ws::was
+; ::ws::was
 ::wa snot::was not
 ::wasnt::wasn't
 ::wya::way
@@ -5765,3 +5765,16 @@ javaerr() {
 ::worjing::working
 ::versiuon::version
 ::portian::portion
+::suprise::surprise
+::penjulum::pendulum
+::lybrary::library
+::tisues::tissues
+::penjlum::pendulum
+::syrip::syrup
+::slideing::sliding
+::overwiten::overwriten
+::overiten::overwriten
+::unavilable::unavailable
+::aganst::against
+::differetn::different
+::beacuase::because
