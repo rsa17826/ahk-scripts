@@ -2,12 +2,14 @@
 #Include <Misc>
 #Include <base>
 #Include <betterui>
+SetWorkingDir(A_ScriptDir)
 
 #SingleInstance off
 urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+")
 urls := urls.map(e => e[0].split("\n"))
 urls := urls.flat()
 urls := urls.map((e) => e.RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", '').Replace("'", '').Replace('"', ''))
+urls := urls.filter(e => e.startsWith("http"))
 if !urls.length
   return
 progress := 0

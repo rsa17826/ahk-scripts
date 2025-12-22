@@ -1084,7 +1084,7 @@ class path {
     o := {
       exists: DirExist(p) || FileExist(p),
       isdir: DirExist(p),
-      isfile: FileExist(p)
+      isfile: !DirExist(p) and FileExist(p) != "d" ? FileExist(p) : 0
     }
     ;
     abspath := ''
@@ -1108,8 +1108,8 @@ class path {
     ;
     p := abspath.split("/")
     o.nameandext := p[-1]
-    o.ext := p[-1][2, -1].includes(".") ? p[-1].split(".")[-1] : ""
-    o.name := o.nameandext.RegExReplace('\.' o.ext "$", "")
+    o.ext := o.isfile && p[-1][2, -1].includes(".") ? p[-1].split(".")[-1] : ""
+    o.name := o.isfile && o.ext ? o.nameandext.RegExReplace('\.' o.ext "$", "") : o.nameandext
     o.parentdirname := p.length > 1 ? p[-2] : ""
     o.parentdir := p.sub(1, -2).join("/")
     return path.infocache.set(o)

@@ -198,6 +198,8 @@ fricking
 frick
 fricker
 webtoon
+shite
+shiz
 )"
 .ToLower()
 .split("`n")
@@ -231,6 +233,14 @@ replace.push([
 replace.push([
   "fked",
   "fucked"
+])
+replace.push([
+  "shite",
+  "shit"
+])
+replace.push([
+  "shiz",
+  "shit"
 ])
 ; replace.push(["×", "x"])
 replace.push([

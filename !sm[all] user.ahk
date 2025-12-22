@@ -186,6 +186,8 @@ tasks.push(() {
 ^!t::{
   if WinActive("ahk_exe explorer.exe ahk_class CabinetWClass")
     SendDll("{alt up}^lcmd{enter}")
+  else if WinActive("ahk_exe explorer.exe")
+    run('cmd /k "cd c:\users\user\desktop & er"')
   else
-    Run("cmd")
+    run("cmd /k er")
 }

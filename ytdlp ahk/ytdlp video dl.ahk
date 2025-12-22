@@ -2,38 +2,6 @@
 #Include <Misc>
 #Include <base>
 #Include <betterui>
-; https://www.twitch.tv/videos/2442602093?filter=archives&sort=time
-; https://www.twitch.tv/videos/2440867343?filter=archives&sort=time
-; https://www.twitch.tv/videos/2439669348?filter=archives&sort=time
-; https://www.twitch.tv/videos/2434741651?filter=archives&sort=time
-; https://www.twitch.tv/videos/2433005202?filter=archives&sort=time
-; https://www.twitch.tv/videos/2423263953?filter=archives&sort=time
-; https://www.twitch.tv/videos/2421455443?filter=archives&sort=time
-; https://www.twitch.tv/videos/2417935604?filter=archives&sort=time
-; https://www.twitch.tv/videos/2413676282?filter=archives&sort=time
-; https://www.twitch.tv/videos/2411513087?filter=archives&sort=time
-; https://www.twitch.tv/videos/2407666331?filter=archives&sort=time
-; https://www.twitch.tv/videos/2405817724?filter=archives&sort=time
-; https://www.twitch.tv/videos/2404118354?filter=archives&sort=time
-; https://www.twitch.tv/videos/2401658254?filter=archives&sort=time
-; https://www.twitch.tv/videos/2398991912?filter=archives&sort=time
-; https://www.twitch.tv/videos/2397419713?filter=archives&sort=time
-; https://www.twitch.tv/videos/2397354646?filter=archives&sort=time
-; https://www.twitch.tv/videos/2395728869?filter=archives&sort=time
-; https://www.twitch.tv/videos/2394826562?filter=archives&sort=time
-
-; https://www.twitch.tv/videos/2489772230?filter=archives&sort=time
-; https://www.twitch.tv/videos/2497768418?filter=archives&sort=time
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2411513087?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2407666331?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2405817724?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2404118354?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2401658254?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2398991912?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2397419713?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2397354646?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2395728869?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
-; cmd /c "cd "C:\Users\User\Downloads\programs\ytdlp ahk" & yt-dlp --no-check-certificate -f bestvideo+bestaudio/best --merge-output-format mp4 "https://www.twitch.tv/videos/2394826562?filter=archives&sort=time" --no-mtime --add-metadata --output ".\%(title)s.%(ext)s" --ffmpeg-location "./ffmpeg.exe" --paths "D:\Downloads\Videos" --audio-format mp3 --audio-quality 128k --cookies ./cookies.txt --sponsorblock-remove "sponsor, intro, outro, selfpromo, preview, filler, interaction, music_offtopic""
 SetWorkingDir(A_ScriptDir)
 
 #SingleInstance Off
@@ -41,6 +9,7 @@ urls := A_Clipboard.RegExMatchAll("https?://[^\s`"]+")
 urls := urls.map(e => e[0].split("\n"))
 urls := urls.flat()
 urls := urls.map((e) => e.RegExReplace("&t=\d+", '').RegExReplace("&startTime=\d+", ''))
+urls := urls.filter(e => e.startsWith("http"))
 if !urls.length
   return
 progress := 0

@@ -5104,7 +5104,6 @@ MoveCaret() { ; V1toV2: Added bracket
 ::warrriors::warriors
 ::wass::was
 ::weas::was
-; ::ws::was
 ::wa snot::was not
 ::wasnt::wasn't
 ::wya::way
@@ -5778,3 +5777,25 @@ javaerr() {
 ::aganst::against
 ::differetn::different
 ::beacuase::because
+::leter::letter
+:*:cypher::cipher
+::beleive::believe
+::lisense::license
+::comfirm::confirm
+::buzsaw::buzzsaw
+::quadrent::quadrant
+::surikan::shuriken
+::electricuted::electrocuted
+::electricute::electrocute
+::ancor::anchor
+::buisket::biscuit
+::bisket::biscuit
+::theif::thief
+; ::ws::was
+
+::surip::syrup
+::suryp::syrup
+:*:udpa::upda
+::fucntions::functions
+::fucntion::function
+::update::update

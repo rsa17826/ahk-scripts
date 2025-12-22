@@ -37,7 +37,7 @@ class cmd {
   static val => Trim(this.RunningCommand.StdOut.ReadAll(), "`r`n`t ")
 
   /**
-   * reutrns the error if one
+   * returns the error if one
    */
   static err => Trim(this.RunningCommand.StdErr.ReadAll(), "`r`n`t ")
 

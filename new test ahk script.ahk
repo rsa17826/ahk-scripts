@@ -36,4 +36,4 @@ if !A_Args.join(" ").includes("nodelete") {
   f.write(filename, text)
 
 }
-run("`"VSCodium.exe`" `"" dir "`" --goto `"" filename "`":" text.split("`n").length ":1")
+run("`"Codium`" `"" dir "`" --goto `"" filename "`":" text.split("`n").length ":1")

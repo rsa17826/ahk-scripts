@@ -771,6 +771,34 @@ if WinExist("YasbBar ahk_class Qt691QWindowToolSaveBits")
 ^!+t::{
   if WinActive("ahk_exe explorer.exe ahk_class CabinetWClass")
     SendDll("{alt up}{shift up}^lcmd /k sudo{enter}")
+  else if WinActive("ahk_exe explorer.exe")
+    run('cmd /k "cd c:\users\user\desktop & er"')
   else
-    Run("cmd")
+    run("cmd /k er")
 }
+f13::a
+$Browser_Back::F2
+; $Browser_Forward::F3
+$Browser_Stop::F4
+$Browser_Refresh::F5
+
+$XButton2::F1
+$Browser_Favorites::F2
+$Browser_Search::F7
+$Browser_Home::F8
+$Launch_App1::F9
+$Launch_App2::F10
+$Launch_Mail::F11
+$Launch_Media::F12
+; $XButton2::F13
+; $Browser_Favorites::F14
+; $Browser_Refresh::F15
+; $Browser_Stop::F16
+; $Browser_Back::F17
+; $Browser_Forward::F18
+; $Browser_Search::F19
+; $Browser_Home::F20
+; $Launch_App1::F21
+; $Launch_App2::F22
+; $Launch_Mail::F23
+; $Launch_Media::F24
