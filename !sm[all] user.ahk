@@ -189,5 +189,5 @@ tasks.push(() {
   else if WinActive("ahk_exe explorer.exe")
     run('cmd /k "cd c:\users\user\desktop & er"')
   else
-    run("cmd /k er")
+    run("cmd /k `"er & cd `"" A_Desktop "`"`"")
 }

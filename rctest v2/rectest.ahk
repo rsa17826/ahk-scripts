@@ -8,13 +8,15 @@ SetWorkingDir(A_ScriptDir)
 DirCreate("temp")
 SetWorkingDir(A_ScriptDir)
 
-IncludeWindowInFileName := false
+includeWindowInFileName := false
+separateFolderesPerWindowTitle := true
+separateFolderesPerWindowExe := false
 folder := 'saved captures'
 maxVids := 60
-windows := [
-  ; 'ahk_exe explorer.exe',
-  ; 'ahk_exe VSCodium.exe'
-]
+; 'ahk_exe explorer.exe',
+; 'ahk_exe VSCodium.exe'
+windows := []
+
 clearTemp()
 
 saving := 0
@@ -45,21 +47,26 @@ startCapture() {
   grecordState.text := 'recording'
 }
 gettitle() {
-  global IncludeWindowInFileName
-  if !IncludeWindowInFileName
-    return FormatTime(A_Now, "HH mm MM dd yyyy")
   exe := StrReplace(WinGetProcessName("a"), ".exe", "")
-  title := WinGetTitle("a")
-  if instr(title, exe)
-    return title . " - " . FormatTime(A_Now, "HH,mm MM,dd,yyyy")
+  wt := WinGetTitle("a")
+  if instr(wt, exe)
+    return wt
   else
-    return title . " - " . exe . " - " . FormatTime(A_Now, "HH,mm MM,dd,yyyy")
+    return wt . " - " . exe
 }
 
 savevideo() {
   global saving
   saving := 1
-  title := gettitle()
+  title := FormatTime(A_Now, "HH mm MM dd yyyy")
+  if includeWindowInFileName
+    title := gettitle() ' - ' title
+  if separateFolderesPerWindowTitle
+    title := gettitle() '\' title
+  if separateFolderesPerWindowExe
+    title := exe := StrReplace(WinGetProcessName("a"), ".exe", "") '\' title
+  videoOutPath := path.join(folder, title.Trim("\/ "))
+  try DirCreate(path.parentdir(videoOutPath))
   arr := []
   lastTime := 0
   lastFile := ''
@@ -98,11 +105,11 @@ savevideo() {
   while !FileExist("temp/joined.mkv") {
     Sleep(100)
   }
-  try FileMove("temp/joined.mkv", folder "/" title . ".mkv")
+  try FileMove("temp/joined.mkv", videoOutPath . ".mkv")
   catch {
     title .= ' RANDOM ' Random() A_TickCount
     MsgBox(title)
-    FileMove("temp/joined.mkv", folder "/" title . ".mkv")
+    FileMove("temp/joined.mkv", videoOutPath . ".mkv")
   }
   ; SetTimer(() {
   ;   try FileDelete("temp/file_list.txt")
@@ -110,7 +117,7 @@ savevideo() {
   try FileDelete('./counter')
   startCapture()
   saving := 0
-  return folder "/" title . ".mkv"
+  return videoOutPath . ".mkv"
 }
 
 pad(num, count) {
@@ -149,16 +156,16 @@ OnExit((*) {
   stopCapture()
 })
 
-SetTimer(() {
-  static i := 0
-  i += 1
-  gticker.text := 'ticker: ' i
-  ii := 0
-  loop files 'temp/*.mkv', 'F' {
-    ii += 1
-  }
-  gfileCount.text := "fileCount: " ii
-}, 100)
+; SetTimer(() {
+;   static i := 0
+;   i += 1
+;   gticker.text := 'ticker: ' i
+;   ii := 0
+;   loop files 'temp/*.mkv', 'F' {
+;     ii += 1
+;   }
+;   gfileCount.text := "fileCount: " ii
+; }, 100)
 
 SetTimer(() {
   gwinCount.text := 'windowCount: ' WinGetList("RCTest - Capture").Length

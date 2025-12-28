@@ -2244,9 +2244,7 @@ class Time {
     s := floor(mod(time / 1000, 60))
     m := floor(mod(time / 60000, 60))
 
-    ; formattedTime := Format("{:02X}:{:02X}:{:03X}", m, s, ms)
-    return m ':' s '.' ms
-
+    return m ':' (s < 10 ? '0' s : s) '.' ms
   }
   static sec := 1000 * Time.ms
   static second := Time.sec
