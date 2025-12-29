@@ -443,6 +443,8 @@ tasks.push(() {
     WinSetAlwaysOnTop(1, "ahk_class OperationStatusWindow")
   if winexist("Delete Folder ahk_class #32770 ahk_exe explorer.exe")
     WinSetAlwaysOnTop(1, "Delete Folder ahk_class #32770 ahk_exe explorer.exe")
+  if winexist("ShareX - Screen recording")
+    WinSetAlwaysOnTop(1, "ShareX - Screen recording")
   ; if winexist("ahk_class #32770")
   ;   WinSetAlwaysOnTop(1, "ahk_class #32770")
 })
